@@ -6,23 +6,23 @@
             android:id="@+id/navigation_home"
             android:icon="@drawable/ic_home"
             android:enabled="true"
-            android:title="홈" />
+            android:title="@string/home" />
 
         <item
                 android:id="@+id/navigation_bar_item_icon_view"
                 android:icon="@drawable/ic_home"
                 android:enabled="true"
-                android:title="습득물"/>
+                android:title="@string/find"/>
         <item
                 android:id="@+id/navigation_bar_item_icon_container"
                 android:icon="@drawable/ic_home"
                 android:enabled="true"
-                android:title="분실물"/>
+                android:title="@string/lost"/>
         <item
                 android:id="@+id/navigation_bar_item_labels_group"
                 android:icon="@drawable/ic_home"
                 android:enabled="true"
-                android:title="마이페이지"/>
+                android:title="@string/mypage"/>
 
 
 </menu>
