@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">capston_lost</string>
+    <string name="app_name">My Application</string>
+    <string name="recently_button_text">최근 접수된\n분실물\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t5건</string>
 </resources>

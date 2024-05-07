@@ -2,5 +2,7 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="chosun_blue">#1E5CB3</color>
+    <color name="navy_blue">#FF3F51B5</color>
+    <color name="blue">#FF216EF3</color>
+    <color name="gray">#19171515</color>
 </resources>
