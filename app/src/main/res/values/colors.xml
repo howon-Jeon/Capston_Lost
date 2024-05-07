@@ -4,4 +4,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="chosun_blue">#1E5CB3</color>
     <color name="purple_500">#FF6200EE</color>
+    <color name = "blue">#0000FF</color>
 </resources>
