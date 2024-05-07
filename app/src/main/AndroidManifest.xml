@@ -13,6 +13,9 @@
         android:theme="@style/Theme.Capston_lost"
         tools:targetApi="31">
         <activity
+            android:name="com.example.capston_lost.Mypage"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
