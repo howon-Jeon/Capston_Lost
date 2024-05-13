@@ -23,7 +23,6 @@
             android:textSize="22sp"
             android:textColor="@color/white"
             android:text="검색" />
-
     </androidx.appcompat.widget.Toolbar>
 
     <com.google.android.material.tabs.TabLayout
@@ -32,7 +31,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/toolbar"
         app:tabIndicatorColor="@color/chosun_blue"
-        app:tabTextAppearance="@style/tab_custom"
+        app:tabTextAppearance="@style/tab_style"
         app:tabGravity="fill"
         app:tabMode="fixed">
 
@@ -47,5 +46,11 @@
             android:text="분실물" />
 
     </com.google.android.material.tabs.TabLayout>
+
+    <FrameLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/tabLayout" />
 
 </RelativeLayout>

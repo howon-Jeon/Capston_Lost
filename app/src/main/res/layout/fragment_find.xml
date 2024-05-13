@@ -10,25 +10,24 @@
         android:layout_below="@+id/tabLayout"
         android:layout_marginTop="10dp">
 
-        <!--        물품 종류-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp">
+            android:orientation="vertical">
 
+            <!--        물품 종류-->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
+                android:layout_marginHorizontal="16dp"
                 android:orientation="horizontal">
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:gravity="center_vertical"
                     android:text="물품 종류"
-                    android:textSize="14sp"
+                    android:textSize="16sp"
                     android:textColor="@color/black" />
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -38,7 +37,7 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textSize="13sp"
+                        android:textSize="14sp"
                         android:hint="물품 종류를 입력하세요"
                         android:gravity="end"
                         android:background="none"
@@ -52,22 +51,23 @@
                 android:layout_centerParent="true"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="20dp"
+                android:layout_marginHorizontal="16dp"
                 android:background="#D9D9D9" />
 
             <!--            습득 시작 일자-->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:layout_marginHorizontal="16dp">
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:gravity="center_vertical"
                     android:text="습득 시작 일자"
                     android:layout_gravity="bottom"
-                    android:textSize="14sp"
+                    android:textSize="16sp"
                     android:textColor="@color/black" />
 
                 <ImageButton
@@ -84,22 +84,23 @@
                 android:layout_centerParent="true"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="20dp"
+                android:layout_marginHorizontal="16dp"
                 android:background="#D9D9D9" />
 
             <!--            습득 종료 일자-->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:layout_marginHorizontal="16dp">
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:gravity="center_vertical"
                     android:text="습득 종료 일자"
                     android:layout_gravity="bottom"
-                    android:textSize="14sp"
+                    android:textSize="16sp"
                     android:textColor="@color/black" />
 
                 <ImageButton
@@ -116,21 +117,22 @@
                 android:layout_centerParent="true"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="20dp"
+                android:layout_marginHorizontal="16dp"
                 android:background="#D9D9D9" />
 
             <!--            습득 장소-->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:layout_marginHorizontal="16dp">
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:gravity="center_vertical"
                     android:text="습득 장소"
-                    android:textSize="14sp"
+                    android:textSize="16sp"
                     android:textColor="@color/black" />
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -140,7 +142,7 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textSize="13sp"
+                        android:textSize="14sp"
                         android:hint="습득 장소를 입력하세요"
                         android:gravity="end"
                         android:background="none"
@@ -154,6 +156,7 @@
                 android:layout_centerParent="true"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="20dp"
+                android:layout_marginHorizontal="16dp"
                 android:background="#D9D9D9" />
 
             <LinearLayout
@@ -169,6 +172,7 @@
                     android:textColor="@android:color/white"
                     android:background="@drawable/blue_button"
                     android:layout_marginEnd="50dp"
+                    android:textSize="16sp"
                     android:text="확인" />
 
                 <Button
@@ -177,6 +181,7 @@
                     android:layout_height="56dp"
                     android:background="@drawable/white_button"
                     android:textColor="@color/chosun_blue"
+                    android:textSize="16sp"
                     android:text="취소" />
 
             </LinearLayout>
