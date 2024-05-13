@@ -13,7 +13,25 @@
         android:theme="@style/Theme.Capston_lost"
         tools:targetApi="31">
         <activity
-            android:name="com.example.capston_lost.Mypage"
+            android:name=".LostReportpage"
+            android:exported="false" />
+        <activity
+            android:name=".FindReportpage"
+            android:exported="false" />
+        <activity
+            android:name=".Success_alert"
+            android:exported="false" />
+        <activity
+            android:name=".Registerpage"
+            android:exported="false" />
+        <activity
+            android:name=".Loginpage"
+            android:exported="false" />
+        <activity
+            android:name=".Searchpage"
+            android:exported="false" />
+        <activity
+            android:name=".Mypage"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

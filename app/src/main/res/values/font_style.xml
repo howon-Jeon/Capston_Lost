@@ -21,7 +21,7 @@
         <item name="android:fontFamily">@font/gmarketsansttfmedium</item>
     </style>
 
-    <style name="tab_custom" parent="@android:style/TextAppearance.Widget.TabWidget">
+    <style name="tab_style" parent="@android:style/TextAppearance.Widget.TabWidget">
         <item name="android:fontFamily">@font/gmarketsansttfmedium</item>
         <item name="android:textSize">16sp</item>
         <item name="android:textColor">@color/black</item>
