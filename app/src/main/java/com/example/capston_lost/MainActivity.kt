@@ -1,20 +1,25 @@
 package com.example.capston_lost
 
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContentView(R.layout.activity_main)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
+        setContentView(R.layout.found_detail)
+/*
+        findViewById<TextView>(R.id.textViewClose).setOnClickListener {
+            finish()
         }
+
+        findViewById<TextView>(R.id.textViewSubmit).setOnClickListener {
+            val title = findViewById<TextView>(R.id.editTextTitle).text.toString()
+            val itemType = findViewById<TextView>(R.id.editTextItemType).text.toString()
+            val lossDate = findViewById<TextView>(R.id.editTextLossDate).text.toString()
+            val location = findViewById<TextView>(R.id.editTextLocation).text.toString()
+            val remarks = findViewById<TextView>(R.id.editTextRemarks).text.toString()
+
+        }*/
     }
 }
