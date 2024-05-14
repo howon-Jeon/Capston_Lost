@@ -36,21 +36,25 @@
         app:tabMode="fixed">
 
         <com.google.android.material.tabs.TabItem
+            android:id="@+id/findBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="습득물" />
 
         <com.google.android.material.tabs.TabItem
+            android:id="@+id/lostBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="분실물" />
 
     </com.google.android.material.tabs.TabLayout>
 
-    <FrameLayout
-        android:id="@+id/fragment_container"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/main_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/tabLayout" />
+        android:layout_below="@+id/tabLayout">
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </RelativeLayout>
