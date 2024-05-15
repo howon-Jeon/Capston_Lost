@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".FindReportpage">
+
+    <ImageButton
+        android:id="@+id/closeBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:background="@android:color/transparent"
+        app:srcCompat="@drawable/close" />
+
+    <TextView
+        android:id="@+id/textViewTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:text="습득물 신고"
+        android:textSize="24sp"
+        android:textColor="@color/chosun_blue"
+        android:fontFamily="@font/gmarketsansttfbold" />
+
+    <Button
+        android:id="@+id/textViewSubmit"
+        android:layout_width="58dp"
+        android:layout_height="30dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/white_button"
+        android:text="완료"
+        android:textColor="@color/chosun_blue"
+        android:textSize="16sp" />
+
+    <EditText
+        android:id="@+id/editTextTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textViewTitle"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="20dp"
+        android:backgroundTint="#D9D9D9"
+        android:fontFamily="@font/gmarket"
+        android:hint="제목"
+        android:textColor="#FF5858"
+        android:textSize="16sp" />
+
+    <EditText
+        android:id="@+id/editTextItemType"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/editTextTitle"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/gmarket"
+        android:textSize="16sp"
+        android:backgroundTint="#D9D9D9"
+        android:hint="물품 종류" />
+
+
+        <!--    onClickListener로 캘린더 호출-->
+        <EditText
+            android:id="@+id/editTextGetDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_below="@+id/editTextItemType"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/gmarket"
+            android:textSize="16sp"
+            android:backgroundTint="#D9D9D9"
+            android:drawableRight="@drawable/date_today"
+            android:hint="습득 일자" />
+
+    <EditText
+        android:id="@+id/editTextLocation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/editTextGetDate"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/gmarket"
+        android:textSize="16sp"
+        android:backgroundTint="#D9D9D9"
+        android:hint="습득 장소" />
+
+    <EditText
+        android:id="@+id/editTextKeep"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/editTextLocation"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/gmarket"
+        android:textSize="16sp"
+        android:backgroundTint="#D9D9D9"
+        android:hint="보관 장소" />
+
+    <EditText
+        android:id="@+id/editTextRemarks"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/editTextKeep"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/gmarket"
+        android:textSize="16sp"
+        android:backgroundTint="#D9D9D9"
+        android:hint="특이사항" />
+
+    <ImageButton
+        android:id="@+id/cameraIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="16dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        app:srcCompat="@drawable/camera" />
+
+
+</RelativeLayout>

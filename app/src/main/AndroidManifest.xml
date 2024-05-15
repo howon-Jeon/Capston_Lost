@@ -18,11 +18,26 @@
         <activity
             android:name=".RegisterActivity"
             android:exported="false" />
-        <activity
-            android:name=".Register"
-            android:exported="false" />
+
         <activity
             android:name=".LoginActivity"
+            android:exported="false" />
+        <activity
+            android:name=".LostReportpage"
+            android:exported="false" />
+        <activity
+            android:name=".FindReportpage"
+            android:exported="false" />
+        <activity
+            android:name=".Success_alert"
+            android:exported="false" />
+
+
+        <activity
+            android:name=".Searchpage"
+            android:exported="false" />
+        <activity
+            android:name=".Mypage"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
