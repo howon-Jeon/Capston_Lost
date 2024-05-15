@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">capston_lost</string>
+    <string name="user_name">조선대</string>
+    <string name="recently_button_text">5건</string>
+    <string name="found_card_cat_content">카드</string>
+    <string name="found_card_date_content">2024.01.01</string>
+    <string name="found_card_loc_content">IT대학</string>
+    <string name="lost_card_cat_content">카드</string>
+    <string name="lost_card_date_content">2024.01.01</string>
+    <string name="lost_card_loc_content">IT대학</string>
 </resources>

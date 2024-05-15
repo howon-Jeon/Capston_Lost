@@ -1,83 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/chosun_blue"
-    tools:context=".MainActivity">
+    android:orientation="vertical">
 
-    <ImageView
-        android:id="@+id/chosun_logo"
-        android:layout_width="300dp"
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabs"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:src="@drawable/chosun_logo2"
-        android:layout_marginTop="120dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        style="@style/CustomTabLayout">
 
-    <TextView
-        android:id="@+id/chosunTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/gmarketsansttfbold"
-        android:text="로스트 조선"
-        android:textColor="@color/white"
-        android:textSize="50sp"
-        android:textStyle="bold"
-        android:layout_marginTop="20dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/chosun_logo" />
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:icon="@drawable/tab_home"
+            android:text="홈"/>
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:icon="@drawable/tab_found"
+            android:text="습득물"/>
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:icon="@drawable/tab_lost"
+            android:text="분실물"/>
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:icon="@drawable/tab_mypage"
+            android:text="마이페이지" />
+    </com.google.android.material.tabs.TabLayout>
 
-    <Button
-        android:id="@+id/loginButton"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:text="로그인"
-        android:textColor="@color/black"
-        android:fontFamily="@font/gmarketsansttfbold"
-        android:layout_marginTop="60dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/chosunTitle" />
-
-    <Button
-        android:id="@+id/btn_googleSignIn"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:textColor="@color/black"
-        android:background="@color/white"
-        android:text="구글 로그인"
-        android:layout_marginTop="20dp"
-        android:fontFamily="@font/gmarketsansttfbold"
-
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/loginButton" />
-
-    <Button
-        android:id="@+id/memberButton"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:textColor="@color/black"
-        android:background="@color/white"
-        android:text="회원가입"
-        android:fontFamily="@font/gmarketsansttfbold"
-        android:layout_marginTop="20dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_googleSignIn" />
-
-
-
-
-
-
-
-
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
