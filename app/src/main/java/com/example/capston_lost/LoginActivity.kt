@@ -35,6 +35,11 @@ class LoginActivity : AppCompatActivity() {
                     if (task.isSuccessful) {
                         // Sign in success, update UI with the signed-in user's information
                         Log.d(TAG, "signInWithEmail:success")
+                        Toast.makeText(
+                            baseContext,
+                            "로그인 성공",
+                            Toast.LENGTH_SHORT,
+                        ).show()
                         val user = auth.currentUser
                         updateUI(user)
                     } else {
@@ -45,7 +50,7 @@ class LoginActivity : AppCompatActivity() {
                             "Authentication failed.",
                             Toast.LENGTH_SHORT,
                         ).show()
-                        updateUI(null)
+
                     }
                 }
         }
