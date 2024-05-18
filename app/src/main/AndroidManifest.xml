@@ -13,7 +13,16 @@
         android:theme="@style/Theme.Capston_lost"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity2"
+            android:name=".LostDetail"
+            android:exported="false" />
+        <activity
+            android:name=".FoundDetail"
+            android:exported="false" />
+        <activity
+            android:name=".ChattingActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MainActivity"
             android:exported="false" />
         <activity
             android:name=".SuccessActivity"
@@ -40,7 +49,7 @@
             android:name=".Mypage"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".MainActivity2"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
