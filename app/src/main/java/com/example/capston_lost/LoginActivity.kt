@@ -57,7 +57,7 @@ class LoginActivity : AppCompatActivity() {
 
     }
     private fun updateUI(user: FirebaseUser?) {
-        val intent = Intent(this, SuccessActivity::class.java)
+        val intent = Intent(this, MainActivity2::class.java)
         startActivity(intent)
         finish()
     }

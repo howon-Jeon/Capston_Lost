@@ -1,5 +1,6 @@
 package com.example.capston_lost
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -10,6 +11,8 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.capston_lost.databinding.ActivityMain2Binding
 import com.example.capston_lost.databinding.ActivityMainBinding
 import com.google.android.material.tabs.TabLayoutMediator
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 class MainActivity2 : AppCompatActivity() {
 
@@ -18,6 +21,13 @@ class MainActivity2 : AppCompatActivity() {
         binding = ActivityMain2Binding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+        val currentUser = Firebase.auth.currentUser
+
+        if(currentUser == null) {
+            // 로그인이 안되어있음
+            startActivity(Intent(this, MainActivity::class.java))
+            finish()
+        }
     }
 
 }
