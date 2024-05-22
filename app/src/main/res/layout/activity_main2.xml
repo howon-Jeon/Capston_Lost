@@ -12,25 +12,28 @@
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabs"
+        style="@style/CustomTabLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        style="@style/CustomTabLayout">
+        android:layout_height="wrap_content">
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:icon="@drawable/tab_home"
-            android:text="홈"/>
+            android:text="홈" />
+
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:icon="@drawable/tab_found"
-            android:text="습득물"/>
+            android:text="습득물" />
+
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:icon="@drawable/tab_lost"
-            android:text="분실물"/>
+            android:text="분실물" />
+
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
