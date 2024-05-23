@@ -21,7 +21,7 @@ class Searchpage : AppCompatActivity() {
 //            insets
 //        }
         setContentView(R.layout.activity_searchpage)
-
+//test
         val tabLayout: TabLayout = findViewById(R.id.tabLayout)
         val lostFragment: Fragment = LostFragment()
         val findFragment: Fragment = FindFragment()
