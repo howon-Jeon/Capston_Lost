@@ -2,6 +2,7 @@ package com.example.capston_lost
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -15,6 +16,13 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import android.view.Gravity
+import android.graphics.Typeface
+import android.widget.ImageView
+import android.widget.LinearLayout
+import androidx.core.content.res.ResourcesCompat
+import android.view.ViewGroup
+
 
 class MainActivity2 : AppCompatActivity() {
 
@@ -40,8 +48,10 @@ class MainActivity2 : AppCompatActivity() {
         val adapter = ViewPagerAdapter(this)
         viewPager.adapter = adapter
 
+        val typeface: Typeface? = ResourcesCompat.getFont(this, R.font.gmarketsansttfmedium)
+
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
-            when (position) {
+            when(position) {
                 0 -> {
                     tab.text = "홈"
                     tab.setIcon(R.drawable.tab_home)
@@ -59,7 +69,43 @@ class MainActivity2 : AppCompatActivity() {
                     tab.setIcon(R.drawable.tab_mypage)
                 }
             }
-        }.attach()
-    }
 
+
+        }.attach()
+
+        // Apply the typeface to all tab items after setup
+        for (i in 0 until tabLayout.tabCount) {
+            val tab = tabLayout.getTabAt(i)
+            if (tab != null) {
+                applyFontToTab(tab, typeface)
+            }
+        }
+
+        // Add a listener to apply the typeface when a tab is selected
+        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                if (tab != null) {
+                    applyFontToTab(tab, typeface)
+                }
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {}
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+                if (tab != null) {
+                    applyFontToTab(tab, typeface)
+                }
+            }
+        })
+    }
+    private fun applyFontToTab(tab: TabLayout.Tab, typeface: Typeface?) {
+        val tabViewGroup = (tab.view as ViewGroup)
+        val tabViewChildCount = tabViewGroup.childCount
+        for (i in 0 until tabViewChildCount) {
+            val tabViewChild = tabViewGroup.getChildAt(i)
+            if (tabViewChild is TextView) {
+                tabViewChild.typeface = typeface
+            }
+        }
+    }
 }
