@@ -36,7 +36,6 @@ class LostAdapter(private val dataSet: Array<String>, private val itemClickListe
         }
     }
 
-
     //리사이클러뷰의 아이템 총 개수 반환
     override fun getItemCount() = dataSet.size
     //return
