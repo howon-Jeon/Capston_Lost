@@ -5,65 +5,56 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.capston_lost.databinding.ActivityFindReportpageBinding
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.ktx.Firebase
 
 class FindReportpage : AppCompatActivity() {
 
-    private lateinit var binding: ActivityFindReportpageBinding
-    private lateinit var db: FirebaseFirestore
+    private lateinit var firestore: FirebaseFirestore
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityFindReportpageBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        setContentView(R.layout.activity_find_reportpage)
 
-        db = FirebaseFirestore.getInstance()
+        // Firestore 초기화
+        firestore = FirebaseFirestore.getInstance()
 
-        // Finding views using View Binding
-        val editTextTitle: EditText = binding.editTextTitle
-        val editTextItemType: EditText = binding.editTextItemType
-        val editTextGetDate: EditText = binding.editTextGetDate
-        val editTextLocation: EditText = binding.editTextLocation
-        val editTextKeep: EditText = binding.editTextKeep
-        val editTextRemarks: EditText = binding.editTextRemarks
-        val submitButton: Button = binding.textViewSubmit
-        val closeButton: Button = binding.closeBtn
-
-        submitButton.setOnClickListener {
-            val title = editTextTitle.text.toString()
-            val itemType = editTextItemType.text.toString()
-            val getDate = editTextGetDate.text.toString()
-            val location = editTextLocation.text.toString()
-            val keepLocation = editTextKeep.text.toString()
-            val remarks = editTextRemarks.text.toString()
-
-            val foundItem = hashMapOf(
-                "title" to title,
-                "itemType" to itemType,
-                "getDate" to getDate,
-                "location" to location,
-                "keepLocation" to keepLocation,
-                "remarks" to remarks
-            )
-
-            db.collection("foundItems")
-                .add(foundItem)
-                .addOnSuccessListener {
-                    showToast("데이터가 성공적으로 추가되었습니다.")
-                }
-                .addOnFailureListener {
-                    showToast("데이터 추가에 실패했습니다.")
-                }
+        // 닫기 버튼 설정
+        val closeButton: Button = findViewById(R.id.closeBtn)
+        closeButton.setOnClickListener {
+            finish() // 화면을 닫음
         }
 
-        closeButton.setOnClickListener {
-            finish()
+        // 완료 버튼 설정
+        val submitButton: Button = findViewById(R.id.textViewSubmit)
+        submitButton.setOnClickListener {
+            saveReportToFirestore()
         }
     }
 
-    private fun showToast(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    private fun saveReportToFirestore() {
+        val title = findViewById<EditText>(R.id.editTextTitle).text.toString()
+        val itemType = findViewById<EditText>(R.id.editTextItemType).text.toString()
+        val getDate = findViewById<EditText>(R.id.editTextGetDate).text.toString()
+        val location = findViewById<EditText>(R.id.editTextLocation).text.toString()
+        val keep = findViewById<EditText>(R.id.editTextKeep).text.toString()
+        val remarks = findViewById<EditText>(R.id.editTextRemarks).text.toString()
+
+        // 데이터 클래스 인스턴스 생성
+        val foundItem = FoundItem(title, itemType, getDate, location, keep, remarks)
+
+        // Firestore 'find_reports' 컬렉션에 데이터 추가
+        firestore.collection("find_reports")
+            .add(foundItem)
+            .addOnSuccessListener { documentReference ->
+                // 추가 성공
+                val toastMessage = "글이 작성되었습니다."
+                Toast.makeText(this@FindReportpage, toastMessage, Toast.LENGTH_SHORT).show()
+                finish() // 화면을 닫음
+            }
+            .addOnFailureListener { e ->
+                // 추가 실패
+                val errorMessage = "글 작성 중 오류가 발생했습니다: $e"
+                Toast.makeText(this@FindReportpage, errorMessage, Toast.LENGTH_SHORT).show()
+            }
     }
 }
