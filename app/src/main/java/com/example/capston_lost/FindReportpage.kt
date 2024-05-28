@@ -3,106 +3,58 @@ package com.example.capston_lost
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.firestore
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
 
 class FindReportpage : AppCompatActivity() {
 
-    private lateinit var editTextTitle: EditText
-    private lateinit var editTextItemType: EditText
-    private lateinit var editTextGetDate: EditText
-    private lateinit var editTextLocation: EditText
-    private lateinit var editTextKeep: EditText
-    private lateinit var editTextRemarks: EditText
-    private lateinit var submitButton: Button
-    private lateinit var db: FirebaseFirestore
-    val fbdb = Firebase.firestore
-    private fun showToast(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-    }
+    private lateinit var firestore: FirebaseFirestore
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_find_reportpage)
 
-        val btn1=findViewById<Button>(R.id.textViewSubmit)
-        val title=findViewById<EditText>(R.id.editTextTitle)
-        val itemtype=findViewById<EditText>(R.id.editTextItemType)
-        btn1.setOnClickListener {
-            val atitle=title.text
-            val aitem= itemtype.text
+        // Firestore 초기화
+        firestore = FirebaseFirestore.getInstance()
 
-            val adata= hashMapOf(
-                "title" to aitem.toString()
-            )
-
-            fbdb.collection("findreport").document(atitle.toString()).set(adata)
-                .addOnSuccessListener {
-                    showToast("데이터가 성공적으로 추가되었습니다.")
-                }
-                .addOnFailureListener { e ->
-                    // 추가 실패 시 처리
-                    showToast("데이터 추가에 실패했습니다.")
-                }
-
+        // 닫기 버튼 설정
+        val closeButton: Button = findViewById(R.id.closeBtn)
+        closeButton.setOnClickListener {
+            finish() // 화면을 닫음
         }
 
+        // 완료 버튼 설정
+        val submitButton: Button = findViewById(R.id.textViewSubmit)
+        submitButton.setOnClickListener {
+            saveReportToFirestore()
+        }
+    }
 
+    private fun saveReportToFirestore() {
+        val title = findViewById<EditText>(R.id.editTextTitle).text.toString()
+        val itemType = findViewById<EditText>(R.id.editTextItemType).text.toString()
+        val getDate = findViewById<EditText>(R.id.editTextGetDate).text.toString()
+        val location = findViewById<EditText>(R.id.editTextLocation).text.toString()
+        val keep = findViewById<EditText>(R.id.editTextKeep).text.toString()
+        val remarks = findViewById<EditText>(R.id.editTextRemarks).text.toString()
 
+        // 데이터 클래스 인스턴스 생성
+        val foundItem = FoundItem(title, itemType, getDate, location, keep, remarks)
 
+        // Firestore 'find_reports' 컬렉션에 데이터 추가
+        firestore.collection("find_reports")
+            .add(foundItem)
+            .addOnSuccessListener { documentReference ->
+                // 추가 성공
+                val toastMessage = "글이 작성되었습니다."
+                Toast.makeText(this@FindReportpage, toastMessage, Toast.LENGTH_SHORT).show()
+                finish() // 화면을 닫음
+            }
+            .addOnFailureListener { e ->
+                // 추가 실패
+                val errorMessage = "글 작성 중 오류가 발생했습니다: $e"
+                Toast.makeText(this@FindReportpage, errorMessage, Toast.LENGTH_SHORT).show()
+            }
     }
 }
-/*
-        // Firebase Firestore 초기화
-        db = FirebaseFirestore.getInstance()
-
-        // XML에서 뷰 요소들 찾기
-        editTextTitle = findViewById(R.id.editTextTitle)
-        editTextItemType = findViewById(R.id.editTextItemType)
-        editTextGetDate = findViewById(R.id.editTextGetDate)
-        editTextLocation = findViewById(R.id.editTextLocation)
-        editTextKeep = findViewById(R.id.editTextKeep)
-        editTextRemarks = findViewById(R.id.editTextRemarks)
-        submitButton = findViewById(R.id.textViewSubmit)
-
-        // 완료 버튼 클릭 시 데이터 저장
-        submitButton.setOnClickListener {
-            val title = editTextTitle.text.toString()
-            val itemType = editTextItemType.text.toString()
-            val getDate = editTextGetDate.text.toString()
-            val location = editTextLocation.text.toString()
-            val keepLocation = editTextKeep.text.toString()
-            val remarks = editTextRemarks.text.toString()
-
-            // Firestore에 저장할 데이터 객체 생성
-            val foundItem = FoundItem(
-                title = title,
-                itemType = itemType,
-                getDate = getDate,
-                location = location,
-                keepLocation = keepLocation,
-                remarks = remarks
-            )
-
-            // Firestore에 데이터 추가
-            db.collection("foundItems")
-                .add(foundItem)
-                .addOnSuccessListener { documentReference ->
-                    // 성공적으로 추가됐을 때 처리
-                    showToast("데이터가 성공적으로 추가되었습니다.")
-                }
-                .addOnFailureListener { e ->
-                    // 추가 실패 시 처리
-                    showToast("데이터 추가에 실패했습니다.")
-                }
-        }
-    }
-
-    private fun showToast(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-    }
-}*/
