@@ -145,6 +145,23 @@
         android:layout_alignParentBottom="true"
         app:srcCompat="@drawable/camera" />
 
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_below="@id/editTextRemarks"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="16dp"
+        android:visibility="gone" />
 
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_below="@id/editTextRemarks"
+        android:layout_marginTop="20dp"
+        android:layout_toEndOf="@id/imageView1"
+        android:layout_marginStart="16dp"
+        android:visibility="gone" />
 
 </RelativeLayout>

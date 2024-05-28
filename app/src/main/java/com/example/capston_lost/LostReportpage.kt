@@ -13,7 +13,7 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import java.util.*
 
-class FindReportpage : AppCompatActivity() {
+class LostReportpage : AppCompatActivity() {
 
     private lateinit var firestore: FirebaseFirestore
     private lateinit var storageRef: StorageReference
@@ -135,21 +135,21 @@ class FindReportpage : AppCompatActivity() {
         val remarks = findViewById<EditText>(R.id.editTextRemarks).text.toString()
 
         // 데이터 클래스 인스턴스 생성
-        val foundItem = FoundItem(title, itemType, getDate, location, keep, remarks)
+        val lostItem = LostItem(title, itemType, getDate, location, remarks)
 
         // Firestore 'find_reports' 컬렉션에 데이터 추가
-        firestore.collection("find_reports")
-            .add(foundItem)
+        firestore.collection("lost_reports")
+            .add(lostItem)
             .addOnSuccessListener { documentReference ->
                 // 추가 성공
                 val toastMessage = "글이 작성되었습니다."
-                Toast.makeText(this@FindReportpage, toastMessage, Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@LostReportpage, toastMessage, Toast.LENGTH_SHORT).show()
                 finish() // 화면을 닫음
             }
             .addOnFailureListener { e ->
                 // 추가 실패
                 val errorMessage = "글 작성 중 오류가 발생했습니다: $e"
-                Toast.makeText(this@FindReportpage, errorMessage, Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@LostReportpage, errorMessage, Toast.LENGTH_SHORT).show()
             }
     }
 }

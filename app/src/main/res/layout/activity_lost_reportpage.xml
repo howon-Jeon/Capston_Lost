@@ -6,18 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".LostReportpage">
-<!--
-    <ImageButton // 이미지 버튼이 화면에 보이지 않는 문제로 Button으로 수정
-        android:id="@+id/closeBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="30dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:background="@android:color/transparent"
-        app:srcCompat="@drawable/close" />
--->
+
     <Button
         android:id="@+id/closeBtn"
         android:layout_width="30dp"
@@ -79,7 +68,7 @@
         android:backgroundTint="#D9D9D9"
         android:hint="물품 종류" />
 
-    <!--    onClickListener로 캘린더 호출-->
+
     <EditText
         android:id="@+id/editTextGetDate"
         android:layout_width="match_parent"
@@ -92,7 +81,7 @@
         android:textSize="16sp"
         android:backgroundTint="#D9D9D9"
         android:drawableRight="@drawable/date_today"
-        android:hint="습득 일자" />
+        android:hint="분실 일자" />
 
     <EditText
         android:id="@+id/editTextLocation"
@@ -130,5 +119,4 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
         app:srcCompat="@drawable/camera" />
-
 </RelativeLayout>

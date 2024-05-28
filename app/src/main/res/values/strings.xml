@@ -10,6 +10,11 @@
     <string name="lost_card_loc_content">IT대학</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
-
-
+    <!-- other string resources -->
+    <string-array name="item_types">
+        <item>카드</item>
+        <item>지갑</item>
+        <item>가방</item>
+        <item>기타</item>
+    </string-array>
 </resources>

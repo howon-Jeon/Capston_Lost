@@ -31,7 +31,7 @@ class HomeFragment : Fragment() {
         val foundButton : Button = view.findViewById(R.id.home_found_button)  // 습득물 신고 버튼
 
         foundButton.setOnClickListener { // 습득물 신고 버튼 ClickListener 설정 -> 습득물 신고 화면 전환
-            val intent = Intent(requireContext(), FindReportpage::class.java)
+            val intent = Intent(requireContext(), LostReportpage::class.java)
             startActivity(intent)
         }
 
