@@ -24,20 +24,15 @@ class LostReportpage : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_find_reportpage)
 
-        // Firestore 초기화
         firestore = FirebaseFirestore.getInstance()
-        // Firebase Storage 초기화
         storage = FirebaseStorage.getInstance()
-        // 이미지 URI 리스트 초기화
         imageUriList = mutableListOf()
 
-        // 닫기 버튼 설정
         val closeButton: Button = findViewById(R.id.closeBtn)
         closeButton.setOnClickListener {
-            finish() // 화면을 닫음
+            finish()
         }
 
-        // 완료 버튼 설정
         val submitButton: Button = findViewById(R.id.textViewSubmit)
         submitButton.setOnClickListener {
             saveReportToFirestore()
@@ -114,9 +109,6 @@ class LostReportpage : AppCompatActivity() {
             .addOnSuccessListener {
                 ref.downloadUrl.addOnSuccessListener { uri ->
                     // 이미지 URL을 Firestore에 저장
-                    // Firestore 문서에 추가할 필드나 구조에 따라 구현하세요.
-                    // 여기서는 예시로 remarks 필드에 이미지 URL을 저장합니다.
-                    // 이 부분은 실제 요구사항에 맞게 변경하세요.
                     firestore.collection("find_reports")
                         .add(mapOf("imageUrl" to uri.toString()))
                 }
@@ -134,20 +126,17 @@ class LostReportpage : AppCompatActivity() {
         val keep = findViewById<EditText>(R.id.editTextKeep).text.toString()
         val remarks = findViewById<EditText>(R.id.editTextRemarks).text.toString()
 
-        // 데이터 클래스 인스턴스 생성
         val lostItem = LostItem(title, itemType, getDate, location, remarks)
 
         // Firestore 'find_reports' 컬렉션에 데이터 추가
         firestore.collection("lost_reports")
             .add(lostItem)
             .addOnSuccessListener { documentReference ->
-                // 추가 성공
                 val toastMessage = "글이 작성되었습니다."
                 Toast.makeText(this@LostReportpage, toastMessage, Toast.LENGTH_SHORT).show()
-                finish() // 화면을 닫음
+                finish()
             }
             .addOnFailureListener { e ->
-                // 추가 실패
                 val errorMessage = "글 작성 중 오류가 발생했습니다: $e"
                 Toast.makeText(this@LostReportpage, errorMessage, Toast.LENGTH_SHORT).show()
             }
