@@ -8,6 +8,7 @@ import android.provider.MediaStore
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
@@ -108,7 +109,7 @@ class LostReportpage : AppCompatActivity() {
         ref.putFile(fileUri)
             .addOnSuccessListener {
                 ref.downloadUrl.addOnSuccessListener { uri ->
-                    // 이미지 URL을 Firestore에 저장하지 않습니다. (Optional)
+                    // 이미지 업로드 성공 시 아무 작업도 하지 않음
                 }
             }
             .addOnFailureListener {
@@ -123,7 +124,11 @@ class LostReportpage : AppCompatActivity() {
         val location = findViewById<EditText>(R.id.editTextLocation).text.toString()
         val remarks = findViewById<EditText>(R.id.editTextRemarks).text.toString()
 
-        val lostItem = LostItem(title, itemType, getDate, location, remarks)
+        // 현재 로그인한 사용자의 UID 가져오기
+        val currentUser = FirebaseAuth.getInstance().currentUser
+        val userId = currentUser?.uid ?: ""
+
+        val lostItem = LostItem(title, itemType, getDate, location, remarks, userId)
 
         // Firestore 'lost_reports' 컬렉션에 데이터 추가
         firestore.collection("lost_reports")

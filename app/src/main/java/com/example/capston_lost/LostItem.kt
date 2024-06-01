@@ -5,5 +5,6 @@ data class LostItem(
     val itemType: String = "",
     val getDate: String = "",
     val location: String = "",
-    val remarks: String = ""
+    val remarks: String = "",
+    val userId: String = ""
 )

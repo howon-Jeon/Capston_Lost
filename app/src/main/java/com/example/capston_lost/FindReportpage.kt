@@ -8,6 +8,7 @@ import android.provider.MediaStore
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
@@ -126,7 +127,11 @@ class FindReportpage : AppCompatActivity() {
         val keep = findViewById<EditText>(R.id.editTextKeep).text.toString()
         val remarks = findViewById<EditText>(R.id.editTextRemarks).text.toString()
 
-        val foundItem = FoundItem(title, itemType, getDate, location, keep, remarks)
+        // 현재 로그인한 사용자의 UID 가져오기
+        val currentUser = FirebaseAuth.getInstance().currentUser
+        val userId = currentUser?.uid ?: ""
+
+        val foundItem = FoundItem(title, itemType, getDate, location, keep, remarks, userId)
 
         firestore.collection("find_reports")
             .add(foundItem)

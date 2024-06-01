@@ -6,5 +6,6 @@ data class FoundItem(
     val getDate: String = "",
     val location: String = "",
     val keep: String = "",
-    val remarks: String = ""
+    val remarks: String = "",
+    val userId: String = ""
 )
