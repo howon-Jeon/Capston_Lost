@@ -22,7 +22,7 @@ class LostReportpage : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_find_reportpage)
+        setContentView(R.layout.activity_lost_reportpage)
 
         firestore = FirebaseFirestore.getInstance()
         storage = FirebaseStorage.getInstance()
@@ -108,9 +108,7 @@ class LostReportpage : AppCompatActivity() {
         ref.putFile(fileUri)
             .addOnSuccessListener {
                 ref.downloadUrl.addOnSuccessListener { uri ->
-                    // 이미지 URL을 Firestore에 저장
-                    firestore.collection("find_reports")
-                        .add(mapOf("imageUrl" to uri.toString()))
+                    // 이미지 URL을 Firestore에 저장하지 않습니다. (Optional)
                 }
             }
             .addOnFailureListener {
@@ -123,12 +121,11 @@ class LostReportpage : AppCompatActivity() {
         val itemType = findViewById<EditText>(R.id.editTextItemType).text.toString()
         val getDate = findViewById<EditText>(R.id.editTextGetDate).text.toString()
         val location = findViewById<EditText>(R.id.editTextLocation).text.toString()
-        val keep = findViewById<EditText>(R.id.editTextKeep).text.toString()
         val remarks = findViewById<EditText>(R.id.editTextRemarks).text.toString()
 
         val lostItem = LostItem(title, itemType, getDate, location, remarks)
 
-        // Firestore 'find_reports' 컬렉션에 데이터 추가
+        // Firestore 'lost_reports' 컬렉션에 데이터 추가
         firestore.collection("lost_reports")
             .add(lostItem)
             .addOnSuccessListener { documentReference ->
