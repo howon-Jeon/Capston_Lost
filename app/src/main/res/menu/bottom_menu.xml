@@ -15,9 +15,9 @@
 
 
     <item
-        android:id="@+id/back"
+        android:id="@+id/myPage"
         android:icon="@drawable/home"
-        android:title="돌아가기" />
+        android:title="개인" />
 
 
 

@@ -10,12 +10,11 @@ import com.example.capston_lost.databinding.ItemUserBinding
 
 class ChatListAdapter(private val onClick: (ChatRoomItem) -> Unit) : ListAdapter<ChatRoomItem, ChatListAdapter.ViewHolder>(differ) {
 
-    inner class ViewHolder(private val binding: ItemChatroomBinding) :
-        RecyclerView.ViewHolder(binding.root) {
+    inner class ViewHolder(private val binding: ItemChatroomBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: ChatRoomItem) {
             binding.nicknameTextView.text = item.otherUserName
-            binding.lastMessageTextView.text = item.lastMessage //상태메세지
+            binding.lastMessageTextView.text = item.lastMessage
 
             binding.root.setOnClickListener {
                 onClick(item)
@@ -24,12 +23,11 @@ class ChatListAdapter(private val onClick: (ChatRoomItem) -> Unit) : ListAdapter
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(
-            ItemChatroomBinding.inflate(
-                LayoutInflater.from(parent.context),
-                parent,
-                false
-            )
+        return  ViewHolder(ItemChatroomBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
+        )
         )
     }
 
@@ -38,15 +36,14 @@ class ChatListAdapter(private val onClick: (ChatRoomItem) -> Unit) : ListAdapter
     }
 
 
-    companion object {
+    companion object{
         val differ = object : DiffUtil.ItemCallback<ChatRoomItem>() {
             override fun areItemsTheSame(oldItem: ChatRoomItem, newItem: ChatRoomItem): Boolean {
                 return oldItem.chatRoomId == newItem.chatRoomId
-                //사용자 id를 받아와서 비교
             }
 
             override fun areContentsTheSame(oldItem: ChatRoomItem, newItem: ChatRoomItem): Boolean {
-                return oldItem == newItem
+                return  oldItem == newItem
             }
 
         }

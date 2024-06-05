@@ -5,7 +5,11 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.capston_lost.Key.Companion.DB_CHAT_ROOMS
+import com.example.capston_lost.Key.Companion.DB_USERS
 import com.example.capston_lost.R
+import com.example.capston_lost.chatdetail.ChatActivity
+import com.example.capston_lost.chatlist.ChatRoomItem
 import com.example.capston_lost.databinding.FragmentUserlistBinding
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
@@ -15,7 +19,7 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import java.util.UUID
 
-class UserFragment : Fragment(R.layout.fragment_userlist) {
+class UserFragment : Fragment(R.layout.fragment_userlist){
 
     private lateinit var binding: FragmentUserlistBinding
 
@@ -31,6 +35,7 @@ class UserFragment : Fragment(R.layout.fragment_userlist) {
 
                 var chatRoomId = ""
                 if (it.value != null) {
+                    //데이터가 존재
                     val chatRoom = it.getValue(ChatRoomItem::class.java)
                     chatRoomId = chatRoom?.chatRoomId ?: ""
                 } else {
@@ -57,30 +62,28 @@ class UserFragment : Fragment(R.layout.fragment_userlist) {
 
         val currentUserId = Firebase.auth.currentUser?.uid ?: ""
 
-        Firebase.database.reference.child(DB_USERS)
-            .addListenerForSingleValueEvent(object : ValueEventListener {
+        Firebase.database.reference.child(DB_USERS).addListenerForSingleValueEvent(object: ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val userItemList = mutableListOf<UserItem>()
 
-                override fun onDataChange(snapshot: DataSnapshot) {
+                snapshot.children.forEach {
+                    val user = it.getValue(UserItem::class.java)
+                    user ?: return
 
-                    val userItemList = mutableListOf<UserItem>()
-
-                    snapshot.children.forEach {
-                        val user = it.getValue(UserItem::class.java)
-                        user ?: return
-
-                        if (user.userId != currentUserId) {
-                            userItemList.add(user)
-                        }
+                    if(user.userId != currentUserId){
+                        userItemList.add(user)
                     }
-
-                    userListAdapter.submitList(userItemList)
                 }
 
-                override fun onCancelled(error: DatabaseError) {
+                userListAdapter.submitList(userItemList)
+            }
 
-                }
+            override fun onCancelled(error: DatabaseError) {
 
-            })
+            }
+
+        })
+
 
     }
 }

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.example.capston_lost.Key
 import com.example.capston_lost.R
 import com.example.capston_lost.databinding.FragmentMypageBinding
 import com.example.capston_lost.userlist.UserItem
@@ -11,7 +12,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 
-class MyPageFragment : Fragment(R.layout.fragment_mypage) {
+class myPageFragments : Fragment(R.layout.fragment_mypage) {
 
     private lateinit var binding: FragmentMypageBinding
 
@@ -43,6 +44,7 @@ class MyPageFragment : Fragment(R.layout.fragment_mypage) {
             currentUserDB.updateChildren(user)
 
         }
+
 
 //        binding.signOutButton.setOnClickListener {
 //            Firebase.auth.signOut()

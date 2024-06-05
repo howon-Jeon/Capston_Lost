@@ -21,11 +21,16 @@ class MyPageFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val logoutButton: Button = view.findViewById(R.id.logout) // 취소 버튼
-
+        val chat: Button = view.findViewById(R.id.chat)
         logoutButton.setOnClickListener {
             Firebase.auth.signOut()
             val intent = Intent(requireContext(), MainActivity::class.java)
             startActivity(intent)
+        }
+
+        chat.setOnClickListener {// 채팅 기능 구현
+            val intent = Intent(requireContext(), ChatMainActivity::class.java )
+            startActivity(intent)  // intent 실행
         }
 
     }
