@@ -45,7 +45,7 @@ class HomeFragment : Fragment() {
 
         val searchButton : Button = view.findViewById(R.id.chat)
         searchButton.setOnClickListener {
-            val intent = Intent(requireContext(), Searchpage::class.java)
+            val intent = Intent(requireContext(), ChatMainActivity::class.java)
             startActivity(intent)
         }
 
