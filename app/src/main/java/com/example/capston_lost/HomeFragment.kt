@@ -35,13 +35,17 @@ class HomeFragment : Fragment() {
             startActivity(intent)
         }
 
-        val searchButton : Button = view.findViewById(R.id.home_search_button) // 검색 버튼
+        val chatButton : Button = view.findViewById(R.id.chat) // 검색 버튼
 
-        searchButton.setOnClickListener{ // 검색 버튼 ClickListenter 설정 -> 검색 화면 전환
+        /*chatButton.setOnClickListener{ // 검색 버튼 ClickListenter 설정 -> 검색 화면 전환
             val intent = Intent(requireContext(), Searchpage::class.java)
             startActivity(intent)
+        }*/
+        chatButton.setOnClickListener {
+            val intent = Intent(requireContext(), ChatMainActivity::class.java)
+            startActivity(intent)
         }
-
     }
+
 
 }
