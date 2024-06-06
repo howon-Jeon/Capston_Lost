@@ -37,7 +37,7 @@ class MainActivity2 : AppCompatActivity() {
             // 로그인이 안되어있음
             startActivity(Intent(this, MainActivity::class.java))
             finish()
-            return // 반드시 return하여 이후 코드를 실행하지 않도록 합니다.
+           // return // 반드시 return하여 이후 코드를 실행하지 않도록 합니다.
         }
 
         // 탭 연결
