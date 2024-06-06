@@ -1,4 +1,5 @@
 <resources>
+    <string name="default_notification_channel_id">default_notification_channel_id</string>
     <string name="app_name">capston_lost</string>
     <string name="user_name">조선대</string>
     <string name="recently_button_text">5건</string>

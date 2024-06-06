@@ -17,6 +17,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.ktx.messaging
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
@@ -58,19 +59,28 @@ class LoginActivity : AppCompatActivity() {
 
     private fun updateUI(user: FirebaseUser?) {
         user?.let {
-            val userId = it.uid
-            val userMap = mutableMapOf<String, Any>()
-            userMap["userId"] = userId
-            userMap["username"] = it.email ?: ""
+            Firebase.messaging.token.addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val token = task.result
+                    val userId = it.uid
+                    val userMap = mutableMapOf<String, Any>()
+                    userMap["userId"] = userId
+                    userMap["username"] = it.email ?: ""
+                    userMap["fcmToken"] = token ?: "" // Use the actual FCM token here
 
-            val databaseReference = FirebaseDatabase.getInstance().getReference(DB_USERS)
-            databaseReference.child(userId).updateChildren(userMap).addOnCompleteListener { task ->
-                if(task.isSuccessful) {
-                    val intent = Intent(this, MainActivity2::class.java)
-                    startActivity(intent)
-                    finish()
+                    val databaseReference = FirebaseDatabase.getInstance().getReference(DB_USERS)
+                    databaseReference.child(userId).updateChildren(userMap).addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            val intent = Intent(this, MainActivity2::class.java)
+                            startActivity(intent)
+                            finish()
+                        } else {
+                            Toast.makeText(this, "데이터베이스 업데이트 실패: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
+                        }
+                    }
                 } else {
-                    Toast.makeText(this, "데이터베이스 업데이트 실패: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
+                    Log.w(TAG, "Fetching FCM registration token failed", task.exception)
+                    Toast.makeText(this, "FCM 토큰을 가져오는 데 실패했습니다.", Toast.LENGTH_SHORT).show()
                 }
             }
         } ?: run {
