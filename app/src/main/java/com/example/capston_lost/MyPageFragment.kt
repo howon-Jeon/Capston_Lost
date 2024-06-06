@@ -1,5 +1,6 @@
 package com.example.capston_lost
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -30,21 +31,15 @@ class MyPageFragment : Fragment() {
         val userEmailTextView: TextView = view.findViewById(R.id.userEmail)
 
         val currentUser = Firebase.auth.currentUser
-        val currentUserId = currentUser?.uid
 
         if (currentUser != null) {
             userEmailTextView.text = currentUser.email
 
-            if (currentUserId != null) {
-                Firebase.database.reference.child(Key.DB_USERS).child(currentUserId).get()
-                    .addOnSuccessListener { dataSnapshot ->
-                        val userItem = dataSnapshot.getValue(UserItem::class.java)
-                        userNameTextView.text = userItem?.username ?: "유저 이름"
-                    }
-                    .addOnFailureListener {
-                        userNameTextView.text = "유저 이름"
-                    }
-            }
+            // Retrieve user name from SharedPreferences
+            val sharedPref = requireActivity().getSharedPreferences("userDetails", Context.MODE_PRIVATE)
+            val userName = sharedPref.getString("userName", "유저 이름")
+
+            userNameTextView.text = userName
         }
 
         logoutButton.setOnClickListener {

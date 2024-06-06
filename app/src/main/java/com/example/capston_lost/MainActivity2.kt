@@ -38,6 +38,8 @@ class MainActivity2 : AppCompatActivity() {
             startActivity(Intent(this, MainActivity::class.java))
             finish()
         }
+        // Get the user name from the intent
+        val userName = intent.getStringExtra("USER_NAME")
 
         // 탭 연결
         setContentView(R.layout.activity_main2)
@@ -109,3 +111,4 @@ class MainActivity2 : AppCompatActivity() {
         }
     }
 }
+
