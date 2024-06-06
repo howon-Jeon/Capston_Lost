@@ -13,6 +13,7 @@ import com.example.capston_lost.databinding.ActivityMain2Binding
 class ChattingActivity : AppCompatActivity() {
     private lateinit var binding: ActivityChattingBinding // FoundDetail, LostDetail의 채팅버튼 선택시 나오는 채팅화면 Activity
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         binding = ActivityChattingBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
