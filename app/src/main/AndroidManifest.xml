@@ -30,9 +30,7 @@
         <activity
             android:name=".MainActivity2"
             android:exported="false" />
-        <activity
-            android:name=".SuccessActivity"
-            android:exported="false" />
+
         <activity
             android:name=".RegisterActivity"
             android:exported="false" />
