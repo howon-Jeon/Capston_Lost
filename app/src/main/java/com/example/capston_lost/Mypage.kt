@@ -20,11 +20,16 @@ class Mypage : AppCompatActivity() {
 
         setContentView(binding.root)
 
-        binding.logout.setOnClickListener {// 로그아웃 기능 구현
+/*binding.logout.setOnClickListener {// 로그아웃 기능 구현
             Firebase.auth.signOut()
             val intent = Intent(this, MainActivity::class.java )
             startActivity(intent)  // intent 실행
         }
+
+        binding.chat.setOnClickListener {// 채팅 기능 구현
+            val intent = Intent(this, ChatMainActivity::class.java )
+            startActivity(intent)  // intent 실행
+        }*/
 
     }
 
