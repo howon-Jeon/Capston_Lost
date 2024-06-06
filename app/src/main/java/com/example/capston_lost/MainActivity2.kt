@@ -39,6 +39,8 @@ class MainActivity2 : AppCompatActivity() {
             finish()
            // return // 반드시 return하여 이후 코드를 실행하지 않도록 합니다.
         }
+        // Get the user name from the intent
+        val userName = intent.getStringExtra("USER_NAME")
 
         // 탭 연결
         val viewPager: ViewPager2 = binding.viewpager
@@ -107,3 +109,4 @@ class MainActivity2 : AppCompatActivity() {
         }
     }
 }
+

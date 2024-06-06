@@ -1,6 +1,7 @@
 package com.example.capston_lost
 
 import android.content.ContentValues.TAG
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -21,7 +22,6 @@ class RegisterActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_registers)
 
-
         // Firebase 초기화
         FirebaseApp.initializeApp(this)
 
@@ -33,10 +33,12 @@ class RegisterActivity : AppCompatActivity() {
             val emailId = findViewById(R.id.member_edit_id) as EditText
             val passwordId = findViewById(R.id.member_edit_pw) as EditText
             val checkPasswordId = findViewById(R.id.member_edit_pw_re) as EditText
+            val usersname = findViewById(R.id.member_edit_name) as EditText
 
             val email: String = emailId.text.toString()
             val password: String = passwordId.text.toString()
             val checkPassword: String = checkPasswordId.text.toString()
+            val names: String = usersname.text.toString()
 
             if (password != checkPassword) {
                 // 비밀번호와 비밀번호 확인이 일치하지 않을 경우
@@ -56,6 +58,14 @@ class RegisterActivity : AppCompatActivity() {
                             // 회원가입 성공
                             Log.d(TAG, "createUserWithEmail:success")
                             val users = auth.currentUser
+
+                            // Store user name in SharedPreferences
+                            val sharedPref = getSharedPreferences("userDetails", Context.MODE_PRIVATE)
+                            with (sharedPref.edit()) {
+                                putString("userName", names)
+                                apply()
+                            }
+
                             updateUI(users)
                         } else {
                             // 회원가입 실패
@@ -73,7 +83,7 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun updateUI(user: FirebaseUser?) {
-        val intent = Intent(this, MainActivity::class.java)
+        val intent = Intent(this, MainActivity2::class.java)
         startActivity(intent)
         finish()
     }
@@ -91,5 +101,4 @@ class RegisterActivity : AppCompatActivity() {
         // Implement your reload logic here if needed
     }
 }
-
 
