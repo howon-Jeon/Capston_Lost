@@ -5,22 +5,22 @@ import android.os.Bundle
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.res.ResourcesCompat
+import androidx.viewpager2.widget.ViewPager2
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import androidx.viewpager2.widget.ViewPager2
 import com.example.capston_lost.databinding.ActivityMain2Binding
-import com.example.capston_lost.databinding.ActivityMainBinding
 import com.google.android.material.tabs.TabLayout
+import com.example.capston_lost.databinding.ActivityMainBinding
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import android.view.Gravity
 import android.graphics.Typeface
+import android.view.Gravity
 import android.widget.ImageView
 import android.widget.LinearLayout
-import androidx.core.content.res.ResourcesCompat
 import android.view.ViewGroup
 
 
@@ -37,13 +37,12 @@ class MainActivity2 : AppCompatActivity() {
             // 로그인이 안되어있음
             startActivity(Intent(this, MainActivity::class.java))
             finish()
+            return // 반드시 return하여 이후 코드를 실행하지 않도록 합니다.
         }
 
         // 탭 연결
-        setContentView(R.layout.activity_main2)
-
-        val viewPager: ViewPager2 = findViewById(R.id.viewpager)
-        val tabLayout: TabLayout = findViewById(R.id.tabs)
+        val viewPager: ViewPager2 = binding.viewpager
+        val tabLayout: TabLayout = binding.tabs
 
         val adapter = ViewPagerAdapter(this)
         viewPager.adapter = adapter
@@ -51,7 +50,7 @@ class MainActivity2 : AppCompatActivity() {
         val typeface: Typeface? = ResourcesCompat.getFont(this, R.font.gmarketsansttfmedium)
 
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
-            when(position) {
+            when (position) {
                 0 -> {
                     tab.text = "홈"
                     tab.setIcon(R.drawable.tab_home)
@@ -69,8 +68,6 @@ class MainActivity2 : AppCompatActivity() {
                     tab.setIcon(R.drawable.tab_mypage)
                 }
             }
-
-
         }.attach()
 
         // Apply the typeface to all tab items after setup
@@ -98,6 +95,7 @@ class MainActivity2 : AppCompatActivity() {
             }
         })
     }
+
     private fun applyFontToTab(tab: TabLayout.Tab, typeface: Typeface?) {
         val tabViewGroup = (tab.view as ViewGroup)
         val tabViewChildCount = tabViewGroup.childCount

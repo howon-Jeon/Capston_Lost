@@ -40,4 +40,3 @@ class TabFoundFragment : Fragment(),  FoundAdapter.OnItemClickListener {
         startActivity(intent)
     }
 }
-

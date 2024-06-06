@@ -1,29 +1,70 @@
 package com.example.capston_lost
 
-import android.content.Intent
 import android.os.Bundle
-import android.widget.Button
-import androidx.activity.enableEdgeToEdge
+import android.util.Log
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import com.example.capston_lost.databinding.ActivityMain2Binding
-import com.example.capston_lost.databinding.FoundDetailBinding
+import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.FirebaseFirestore
 
-class FoundDetail : AppCompatActivity() { // TabFoundFragment의 리사이클러 뷰 아이템 선택시 뜨는 습득물 상세페이지
+class FoundDetail : AppCompatActivity() {
 
-    private lateinit var binding: FoundDetailBinding
+    private lateinit var firestore: FirebaseFirestore
+
+    private lateinit var titleTextView: TextView
+    private lateinit var itemTypeTextView: TextView
+    private lateinit var getDateTextView: TextView
+    private lateinit var locationTextView: TextView
+    private lateinit var keepTextView: TextView
+    private lateinit var remarksTextView: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        binding = FoundDetailBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
-        setContentView(binding.root)
+        setContentView(R.layout.found_detail)
 
-        val ChatButton : Button = findViewById(R.id.found_detail_chat) // 채팅 버튼
+        // Firebase Firestore 초기화
+        firestore = FirebaseFirestore.getInstance()
 
-        ChatButton.setOnClickListener {// 채팅 버튼 ClickListener 설정 -> 채팅화면(activity_chatting) 전환
-            val intent = Intent(this, ChattingActivity::class.java)
-            startActivity(intent)
+        // UI 요소 초기화
+        titleTextView = findViewById(R.id.found_detail_cat)
+        itemTypeTextView = findViewById(R.id.found_detail_cat)
+        getDateTextView = findViewById(R.id.found_detail_date)
+        locationTextView = findViewById(R.id.found_detail_lostloc)
+        keepTextView = findViewById(R.id.found_detail_storageloc)
+        remarksTextView = findViewById(R.id.found_detail_comment)
+
+        // Intent로 전달된 document ID 가져오기
+        val documentId = intent.getStringExtra("documentId")
+
+        // Firestore에서 데이터 가져오기
+        if (documentId != null) {
+            firestore.collection("find_reports").document(documentId)
+                .get()
+                .addOnSuccessListener { document ->
+                    if (document != null) {
+                        val foundItem = document.toObject(FoundItem::class.java)
+                        if (foundItem != null) {
+                            // UI에 데이터 설정
+                            titleTextView.text = foundItem.itemType
+                            itemTypeTextView.text = foundItem.itemType
+                            getDateTextView.text = foundItem.getDate
+                            locationTextView.text = foundItem.location
+                            keepTextView.text = foundItem.keep
+                            remarksTextView.text = foundItem.remarks
+                        } else {
+                            Log.d(TAG, "DocumentSnapshot data: null")
+                        }
+                    } else {
+                        Log.d(TAG, "No such document")
+                    }
+                }
+                .addOnFailureListener { exception ->
+                    Log.d(TAG, "get failed with ", exception)
+                }
         }
+    }
+
+    companion object {
+        private const val TAG = "FoundDetail"
     }
 }

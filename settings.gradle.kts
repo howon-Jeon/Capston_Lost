@@ -21,4 +21,3 @@ dependencyResolutionManagement {
 
 rootProject.name = "capston_lost"
 include(":app")
- 

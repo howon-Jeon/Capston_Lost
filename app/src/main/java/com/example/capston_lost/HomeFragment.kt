@@ -23,7 +23,7 @@ class HomeFragment : Fragment() {
 
         val lostButton : Button = view.findViewById(R.id.home_lost_button) // 분실물 신고 버튼
 
-        lostButton.setOnClickListener { // 습득물 신고 버튼 ClickListener 설정 -> 분실물 신고 화면 전환
+        lostButton.setOnClickListener { // 분실물 신고 버튼 ClickListener 설정 -> 분실물 신고 화면 전환
             val intent = Intent(requireContext(), LostReportpage::class.java)
             startActivity(intent)
         }
