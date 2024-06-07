@@ -25,6 +25,7 @@ class FoundAdapter(private val dataSet: Array<String>, private val itemClickList
         return ViewHolder(view)
     }
 
+
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.cardTitle.text = dataSet[position]
         holder.itemView.setOnClickListener {
