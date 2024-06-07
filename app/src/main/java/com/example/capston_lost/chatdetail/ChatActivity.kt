@@ -5,6 +5,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.capston_lost.Key
 import com.example.capston_lost.databinding.ActivityChatdetailBinding
 import com.example.capston_lost.userlist.UserItem
@@ -27,6 +28,7 @@ class ChatActivity : AppCompatActivity() {
 
     private val chatItemList = mutableListOf<ChatItem>()
     private val chatAdapter = ChatAdapter()
+    private lateinit var linearLayoutManager: LinearLayoutManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,6 +38,7 @@ class ChatActivity : AppCompatActivity() {
         chatRoomId = intent.getStringExtra(EXTRA_CHAT_ROOM_ID) ?: return
         otherUserId = intent.getStringExtra(EXTRA_OTHER_USER_ID) ?: return
         myUserId = Firebase.auth.currentUser?.uid ?: return
+        linearLayoutManager = LinearLayoutManager(applicationContext)
 
         // 사용자 정보 가져오기
         Firebase.database.reference.child(Key.DB_USERS).child(myUserId).get()
@@ -68,9 +71,21 @@ class ChatActivity : AppCompatActivity() {
 
         // RecyclerView 설정
         binding.chatRecyclerView.apply {
-            layoutManager = LinearLayoutManager(this@ChatActivity)
+            layoutManager = linearLayoutManager
             adapter = chatAdapter
         }
+
+        chatAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
+            override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+                super.onItemRangeInserted(positionStart, itemCount)
+
+                linearLayoutManager.smoothScrollToPosition(
+                    binding.chatRecyclerView,
+                    null,
+                    chatAdapter.itemCount
+                )
+            }
+        })
 
         // 메시지 전송
         binding.sendButton.setOnClickListener {
