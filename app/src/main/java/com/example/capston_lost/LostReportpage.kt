@@ -1,6 +1,7 @@
 package com.example.capston_lost
 
 import android.app.DatePickerDialog
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -75,7 +76,7 @@ class LostReportpage : AppCompatActivity() {
         val itemTypes = arrayOf("가방", "옷", "지갑", "전자기기", "기타")
         val builder = AlertDialog.Builder(this)
         builder.setTitle("물품 종류 선택")
-        builder.setItems(itemTypes) { dialog, which ->
+        builder.setItems(itemTypes) { _, which ->
             val selectedItemType = itemTypes[which]
             val editTextItemType: EditText = findViewById(R.id.editTextItemType)
             editTextItemType.setText(selectedItemType)
@@ -105,6 +106,8 @@ class LostReportpage : AppCompatActivity() {
         val editTextLocation: EditText = findViewById(R.id.editTextLocation)
         val editTextRemarks: EditText = findViewById(R.id.editTextRemarks)
 
+        val sharedPref = getSharedPreferences("userDetails", Context.MODE_PRIVATE)
+        val userName = sharedPref.getString("userName", "Unknown")
         val userId = FirebaseAuth.getInstance().currentUser?.uid
         val title = editTextTitle.text.toString()
         val itemType = editTextItemType.text.toString()
@@ -115,7 +118,16 @@ class LostReportpage : AppCompatActivity() {
         if (userId != null) {
             // 이미지 업로드 후 Firestore에 저장
             uploadImagesToStorage(userId) { imageUrls ->
-                val report = LostItem(title, itemType, getDate, location, remarks, userId, imageUrls.joinToString(","))
+                val report = LostItem(
+                    title = title,
+                    itemType = itemType,
+                    getDate = getDate,
+                    location = location,
+                    remarks = remarks,
+                    userId = userId,
+                    imageUrl = imageUrls.joinToString(","),
+                    nickname = userName ?: "Unknown"
+                )
 
                 firestore.collection("lost_reports")
                     .add(report)

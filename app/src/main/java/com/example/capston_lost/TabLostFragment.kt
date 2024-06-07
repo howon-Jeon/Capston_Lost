@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 
@@ -17,6 +18,7 @@ class TabLostFragment : Fragment(), LostAdapter.OnItemClickListener {
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: LostAdapter
     private lateinit var firestore: FirebaseFirestore
+    private lateinit var swipeRefreshLayout: SwipeRefreshLayout
     private val lostItems = mutableListOf<LostItem>()
 
     override fun onCreateView(
@@ -29,6 +31,7 @@ class TabLostFragment : Fragment(), LostAdapter.OnItemClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout)
         recyclerView = view.findViewById(R.id.lost_recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
@@ -37,6 +40,10 @@ class TabLostFragment : Fragment(), LostAdapter.OnItemClickListener {
 
         firestore = FirebaseFirestore.getInstance()
         loadLostItems()
+
+        swipeRefreshLayout.setOnRefreshListener {
+            loadLostItems()
+        }
     }
 
     private fun loadLostItems() {
@@ -53,9 +60,11 @@ class TabLostFragment : Fragment(), LostAdapter.OnItemClickListener {
                     lostItems.add(lostItem)
                 }
                 adapter.notifyDataSetChanged()
+                swipeRefreshLayout.isRefreshing = false
             }
             .addOnFailureListener { e ->
                 Toast.makeText(requireContext(), "데이터를 가져오는 데 실패했습니다.", Toast.LENGTH_SHORT).show()
+                swipeRefreshLayout.isRefreshing = false
             }
     }
 
