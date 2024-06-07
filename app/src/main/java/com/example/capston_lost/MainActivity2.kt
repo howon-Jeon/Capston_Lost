@@ -23,22 +23,23 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.view.ViewGroup
 
-
 class MainActivity2 : AppCompatActivity() {
 
     private lateinit var binding: ActivityMain2Binding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         binding = ActivityMain2Binding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         val currentUser = Firebase.auth.currentUser
 
-        if(currentUser == null) {
+        if (currentUser == null) {
             // 로그인이 안되어있음
             startActivity(Intent(this, MainActivity::class.java))
             finish()
-           // return // 반드시 return하여 이후 코드를 실행하지 않도록 합니다.
+            return // 반드시 return하여 이후 코드를 실행하지 않도록 합니다.
         }
+
         // Get the user name from the intent
         val userName = intent.getStringExtra("USER_NAME")
 
@@ -109,4 +110,3 @@ class MainActivity2 : AppCompatActivity() {
         }
     }
 }
-

@@ -6,34 +6,36 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class LostAdapter(private val dataSet: Array<String>, private val itemClickListener: OnItemClickListener) :
-    RecyclerView.Adapter<LostAdapter.ViewHolder>() { // 분실물 목록 화면(activity_lost)의 리사이클러뷰 아이템을 위한 Adapter
+class LostAdapter(private val dataSet: List<LostItem>, private val itemClickListener: OnItemClickListener) :
+    RecyclerView.Adapter<LostAdapter.ViewHolder>() {
 
     interface OnItemClickListener {
         fun onItemClick(position: Int)
     }
 
-
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val cardTitle: TextView = view.findViewById(R.id.card_title)
-        // 카드뷰의 다른 TextView 등도 여기에 추가할 수 있습니다.
+        val cardCatContent: TextView = view.findViewById(R.id.card_cat_content)
+        val cardDateContent: TextView = view.findViewById(R.id.card_date_content)
+        val cardLocContent: TextView = view.findViewById(R.id.card_loc_content)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.lost_cardview, parent, false)
-
         return ViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.cardTitle.text = dataSet[position]
+        val lostItem = dataSet[position]
+        holder.cardTitle.text = lostItem.title
+        holder.cardCatContent.text = lostItem.itemType
+        holder.cardDateContent.text = lostItem.getDate
+        holder.cardLocContent.text = lostItem.location
         holder.itemView.setOnClickListener {
             itemClickListener.onItemClick(position)
         }
     }
 
     override fun getItemCount() = dataSet.size
-
-
 }

@@ -9,12 +9,15 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 
-
-class TabLostFragment : Fragment(),  LostAdapter.OnItemClickListener {
+class TabLostFragment : Fragment(), LostAdapter.OnItemClickListener {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: LostAdapter
+    private lateinit var firestore: FirebaseFirestore
+    private val lostItems = mutableListOf<LostItem>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,15 +32,37 @@ class TabLostFragment : Fragment(),  LostAdapter.OnItemClickListener {
         recyclerView = view.findViewById(R.id.lost_recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-        val dataSet = arrayOf("Item 1") // 카드뷰에 표시할 데이터
-
-        adapter = LostAdapter(dataSet,this )
+        adapter = LostAdapter(lostItems, this)
         recyclerView.adapter = adapter
+
+        firestore = FirebaseFirestore.getInstance()
+        loadLostItems()
     }
 
-    override fun onItemClick(position: Int) { // 카드뷰 선택시 상세페이지 전환
+    private fun loadLostItems() {
+        firestore.collection("lost_reports")
+            .orderBy("getDate", Query.Direction.DESCENDING) // 날짜 기준 내림차순 정렬
+            .get()
+            .addOnSuccessListener { result ->
+                lostItems.clear()
+                for (document in result) {
+                    val lostItem = document.toObject(LostItem::class.java).apply {
+                        // documentId를 따로 저장
+                        this.documentId = document.id
+                    }
+                    lostItems.add(lostItem)
+                }
+                adapter.notifyDataSetChanged()
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(requireContext(), "데이터를 가져오는 데 실패했습니다.", Toast.LENGTH_SHORT).show()
+            }
+    }
+
+    override fun onItemClick(position: Int) {
+        val selectedLostItem = lostItems[position]
         val intent = Intent(requireContext(), LostDetail::class.java)
+        intent.putExtra("lostItemId", selectedLostItem.documentId)
         startActivity(intent)
     }
 }
-
