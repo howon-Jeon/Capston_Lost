@@ -17,7 +17,7 @@ class LostDetail : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.found_detail) // 레이아웃 파일 이름 확인
+        setContentView(R.layout.lost_detail) // 레이아웃 파일 이름 확인
 
         firestore = FirebaseFirestore.getInstance()
 
@@ -52,12 +52,12 @@ class LostDetail : AppCompatActivity() {
         val remarks = document.getString("remarks")
         val imageUrl = document.getString("imageUrl")
 
-        val nameTextView: TextView = findViewById(R.id.found_detail_name)
-        val itemTypeTextView: TextView = findViewById(R.id.found_detail_cat)
-        val getDateTextView: TextView = findViewById(R.id.found_detail_date)
-        val locationTextView: TextView = findViewById(R.id.found_detail_lostloc)
-        val remarksTextView: TextView = findViewById(R.id.found_detail_comment)
-        val imageView: ImageView = findViewById(R.id.found_detail_image)
+        val nameTextView: TextView = findViewById(R.id.lost_detail_name)
+        val itemTypeTextView: TextView = findViewById(R.id.lost_detail_cat)
+        val getDateTextView: TextView = findViewById(R.id.lost_detail_date)
+        val locationTextView: TextView = findViewById(R.id.lost_detail_lostloc)
+        val remarksTextView: TextView = findViewById(R.id.lost_detail_comment)
+        val imageView: ImageView = findViewById(R.id.lost_detail_image)
 
         nameTextView.text = nickname ?: "N/A"
         itemTypeTextView.text = itemType ?: "N/A"

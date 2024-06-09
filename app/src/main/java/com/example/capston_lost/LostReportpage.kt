@@ -6,10 +6,12 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
@@ -23,6 +25,8 @@ class LostReportpage : AppCompatActivity() {
     private lateinit var storage: FirebaseStorage
     private lateinit var imageUriList: MutableList<Uri>
     private lateinit var selectedImageView: ImageView
+    private lateinit var uploadProgressBar: ProgressBar
+    private lateinit var uploadStatusTextView: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,6 +36,9 @@ class LostReportpage : AppCompatActivity() {
         storage = FirebaseStorage.getInstance()
         imageUriList = mutableListOf()
 
+        uploadProgressBar = findViewById(R.id.uploadProgressBar)
+        uploadStatusTextView = findViewById(R.id.uploadStatusTextView)
+
         val closeButton: Button = findViewById(R.id.closeBtn)
         closeButton.setOnClickListener {
             finish()
@@ -39,7 +46,13 @@ class LostReportpage : AppCompatActivity() {
 
         val submitButton: Button = findViewById(R.id.textViewSubmit)
         submitButton.setOnClickListener {
-            saveReportToFirestore()
+            if (isFormValid()) {
+                uploadProgressBar.visibility = View.VISIBLE
+                uploadStatusTextView.visibility = View.VISIBLE
+                saveReportToFirestore()
+            } else {
+                Snackbar.make(submitButton, "모든 필드를 입력해주세요.", Snackbar.LENGTH_SHORT).show()
+            }
         }
 
         val editTextItemType: EditText = findViewById(R.id.editTextItemType)
@@ -133,15 +146,33 @@ class LostReportpage : AppCompatActivity() {
                     .add(report)
                     .addOnSuccessListener {
                         Toast.makeText(this, "분실 신고가 저장되었습니다.", Toast.LENGTH_SHORT).show()
+                        uploadProgressBar.visibility = View.GONE
+                        uploadStatusTextView.visibility = View.GONE
                         finish()
                     }
                     .addOnFailureListener { e ->
                         Toast.makeText(this, "저장 중 오류가 발생했습니다.", Toast.LENGTH_SHORT).show()
+                        uploadProgressBar.visibility = View.GONE
+                        uploadStatusTextView.visibility = View.GONE
                     }
             }
         }
     }
 
+
+    private fun isFormValid(): Boolean {
+        val editTextTitle: EditText = findViewById(R.id.editTextTitle)
+        val editTextItemType: EditText = findViewById(R.id.editTextItemType)
+        val editTextGetDate: EditText = findViewById(R.id.editTextGetDate)
+        val editTextLocation: EditText = findViewById(R.id.editTextLocation)
+        val editTextRemarks: EditText = findViewById(R.id.editTextRemarks)
+
+        return editTextTitle.text.isNotEmpty() &&
+                editTextItemType.text.isNotEmpty() &&
+                editTextGetDate.text.isNotEmpty() &&
+                editTextLocation.text.isNotEmpty() &&
+                editTextRemarks.text.isNotEmpty()
+    }
     private fun uploadImagesToStorage(userId: String, onSuccess: (List<String>) -> Unit) {
         val imageUrls = mutableListOf<String>()
         val storageRef = storage.reference.child("lost_images").child(userId)
@@ -157,6 +188,8 @@ class LostReportpage : AppCompatActivity() {
                 }
             }.addOnFailureListener {
                 // 업로드 실패 처리
+                uploadProgressBar.visibility = View.GONE
+                uploadStatusTextView.visibility = View.GONE
             }
         }
     }

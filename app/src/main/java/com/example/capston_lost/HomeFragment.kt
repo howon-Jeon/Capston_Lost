@@ -8,9 +8,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
+import com.bumptech.glide.Glide
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 
 class HomeFragment : Fragment() {
+
+    private lateinit var profileImageView: ImageView
+    private lateinit var storageRef: StorageReference
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,6 +38,17 @@ class HomeFragment : Fragment() {
         val userNameTextView: TextView = view.findViewById(R.id.home_user_name)
         userNameTextView.text = userName
 
+        profileImageView = view.findViewById(R.id.home_profile)
+
+        // Load profile image URL from SharedPreferences
+        val profileImageUrl = sharedPref.getString("profileImageUrl", null)
+        if (profileImageUrl != null) {
+            // Load the profile image using Glide
+            Glide.with(this).load(profileImageUrl).into(profileImageView)
+        } else {
+            // Optionally, handle the case where there is no profile image URL
+        }
+
         val lostButton : Button = view.findViewById(R.id.home_lost_button)
         lostButton.setOnClickListener {
             val intent = Intent(requireContext(), LostReportpage::class.java)
@@ -48,6 +66,5 @@ class HomeFragment : Fragment() {
             val intent = Intent(requireContext(), ChatMainActivity::class.java)
             startActivity(intent)
         }
-
     }
 }

@@ -1,13 +1,17 @@
 package com.example.capston_lost
 
 import android.app.DatePickerDialog
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.bumptech.glide.Glide
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
@@ -20,6 +24,9 @@ class FindReportpage : AppCompatActivity() {
     private lateinit var storageRef: StorageReference
     private lateinit var storage: FirebaseStorage
     private lateinit var imageUriList: MutableList<Uri>
+    private lateinit var selectedImageView: ImageView
+    private lateinit var uploadProgressBar: ProgressBar
+    private lateinit var uploadStatusTextView: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,6 +36,9 @@ class FindReportpage : AppCompatActivity() {
         storage = FirebaseStorage.getInstance()
         imageUriList = mutableListOf()
 
+        uploadProgressBar = findViewById(R.id.uploadProgressBar)
+        uploadStatusTextView = findViewById(R.id.uploadStatusTextView)
+
         val closeButton: Button = findViewById(R.id.closeBtn)
         closeButton.setOnClickListener {
             finish()
@@ -36,113 +46,155 @@ class FindReportpage : AppCompatActivity() {
 
         val submitButton: Button = findViewById(R.id.textViewSubmit)
         submitButton.setOnClickListener {
-            saveReportToFirestore()
+            if (isFormValid()) {
+                uploadProgressBar.visibility = View.VISIBLE
+                uploadStatusTextView.visibility = View.VISIBLE
+                saveReportToFirestore()
+            } else {
+                Snackbar.make(submitButton, "모든 필드를 입력해주세요.", Snackbar.LENGTH_SHORT).show()
+            }
         }
 
-        // 물품 종류 선택
         val editTextItemType: EditText = findViewById(R.id.editTextItemType)
         editTextItemType.setOnClickListener {
             showItemTypeDialog()
         }
 
-        // 캘린더 호출
         val editTextGetDate: EditText = findViewById(R.id.editTextGetDate)
         editTextGetDate.setOnClickListener {
             showDatePickerDialog()
         }
 
-        // 갤러리에서 사진 선택
-        val cameraIcon: ImageButton = findViewById(R.id.cameraIcon)
-        cameraIcon.setOnClickListener {
-            openGallery()
+        selectedImageView = findViewById(R.id.selectedImageView)
+        val selectImageButton: ImageButton = findViewById(R.id.selectImageButton)
+        selectImageButton.setOnClickListener {
+            val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+            intent.type = "image/*"
+            startActivityForResult(intent, REQUEST_IMAGE_PICK)
         }
-    }
-
-    private fun showItemTypeDialog() {
-        val items = arrayOf("카드", "지갑", "가방", "기타")
-        val builder = AlertDialog.Builder(this)
-        builder.setTitle("물품 종류 선택")
-            .setItems(items) { _, which ->
-                findViewById<EditText>(R.id.editTextItemType).setText(items[which])
-            }
-        builder.create().show()
-    }
-
-    private fun showDatePickerDialog() {
-        val calendar = Calendar.getInstance()
-        val datePickerDialog = DatePickerDialog(
-            this,
-            { _, year, month, dayOfMonth ->
-                val date = "$year-${month + 1}-$dayOfMonth"
-                findViewById<EditText>(R.id.editTextGetDate).setText(date)
-            },
-            calendar.get(Calendar.YEAR),
-            calendar.get(Calendar.MONTH),
-            calendar.get(Calendar.DAY_OF_MONTH)
-        )
-        datePickerDialog.show()
-    }
-
-    private fun openGallery() {
-        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        startActivityForResult(intent, 1)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == 1 && resultCode == RESULT_OK && data != null) {
-            val selectedImage: Uri? = data.data
-            selectedImage?.let {
-                if (imageUriList.size < 2) {
-                    imageUriList.add(it)
-                    uploadImageToFirebase(it)
-                } else {
-                    Toast.makeText(this, "최대 2장의 이미지만 업로드할 수 있습니다.", Toast.LENGTH_SHORT).show()
-                }
+        if (requestCode == REQUEST_IMAGE_PICK && resultCode == RESULT_OK) {
+            data?.data?.let { uri ->
+                imageUriList.add(uri)
+                // 이미지 선택 후 이미지뷰에 표시
+                Glide.with(this).load(uri).into(selectedImageView)
             }
         }
     }
 
-    private fun uploadImageToFirebase(fileUri: Uri) {
-        val fileName = UUID.randomUUID().toString() + ".jpg"
-        val ref = storage.reference.child("images/$fileName")
-        ref.putFile(fileUri)
-            .addOnSuccessListener {
-                ref.downloadUrl.addOnSuccessListener { uri ->
-                    // 이미지 URL을 Firestore에 저장
-                    firestore.collection("find_reports")
-                        .add(mapOf("imageUrl" to uri.toString()))
-                }
-            }
-            .addOnFailureListener {
-                Toast.makeText(this, "이미지 업로드 실패", Toast.LENGTH_SHORT).show()
-            }
+    private fun showItemTypeDialog() {
+        val itemTypes = arrayOf("가방", "옷", "지갑", "전자기기", "기타")
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("물품 종류 선택")
+        builder.setItems(itemTypes) { _, which ->
+            val selectedItemType = itemTypes[which]
+            val editTextItemType: EditText = findViewById(R.id.editTextItemType)
+            editTextItemType.setText(selectedItemType)
+        }
+        builder.show()
+    }
+
+    private fun showDatePickerDialog() {
+        val calendar = Calendar.getInstance()
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH)
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+        val datePickerDialog = DatePickerDialog(this, { _, selectedYear, selectedMonth, selectedDay ->
+            val dateString = "$selectedYear-${selectedMonth + 1}-$selectedDay"
+            val editTextGetDate: EditText = findViewById(R.id.editTextGetDate)
+            editTextGetDate.setText(dateString)
+        }, year, month, day)
+
+        datePickerDialog.show()
     }
 
     private fun saveReportToFirestore() {
-        val title = findViewById<EditText>(R.id.editTextTitle).text.toString()
-        val itemType = findViewById<EditText>(R.id.editTextItemType).text.toString()
-        val getDate = findViewById<EditText>(R.id.editTextGetDate).text.toString()
-        val location = findViewById<EditText>(R.id.editTextLocation).text.toString()
-        val keep = findViewById<EditText>(R.id.editTextKeep).text.toString()
-        val remarks = findViewById<EditText>(R.id.editTextRemarks).text.toString()
+        val editTextTitle: EditText = findViewById(R.id.editTextTitle)
+        val editTextItemType: EditText = findViewById(R.id.editTextItemType)
+        val editTextGetDate: EditText = findViewById(R.id.editTextGetDate)
+        val editTextLocation: EditText = findViewById(R.id.editTextLocation)
+        val editTextRemarks: EditText = findViewById(R.id.editTextRemarks)
 
-        // 현재 로그인한 사용자의 UID 가져오기
-        val currentUser = FirebaseAuth.getInstance().currentUser
-        val userId = currentUser?.uid ?: ""
+        val sharedPref = getSharedPreferences("userDetails", Context.MODE_PRIVATE)
+        val userName = sharedPref.getString("userName", "Unknown")
+        val userId = FirebaseAuth.getInstance().currentUser?.uid
+        val title = editTextTitle.text.toString()
+        val itemType = editTextItemType.text.toString()
+        val getDate = editTextGetDate.text.toString()
+        val location = editTextLocation.text.toString()
+        val remarks = editTextRemarks.text.toString()
 
-        val foundItem = FoundItem(title, itemType, getDate, location, keep, remarks, userId)
+        if (userId != null) {
+            // 이미지 업로드 후 Firestore에 저장
+            uploadImagesToStorage(userId) { imageUrls ->
+                val report = FoundItem(
+                    title = title,
+                    itemType = itemType,
+                    getDate = getDate,
+                    location = location,
+                    remarks = remarks,
+                    userId = userId,
+                    imageUrl = imageUrls.joinToString(","),
+                    nickname = userName ?: "Unknown"
+                )
 
-        firestore.collection("find_reports")
-            .add(foundItem)
-            .addOnSuccessListener { documentReference ->
-                val toastMessage = "글이 작성되었습니다."
-                Toast.makeText(this@FindReportpage, toastMessage, Toast.LENGTH_SHORT).show()
-                finish()
+                firestore.collection("found_reports")
+                    .add(report)
+                    .addOnSuccessListener {
+                        Toast.makeText(this, "습득 신고가 저장되었습니다.", Toast.LENGTH_SHORT).show()
+                        uploadProgressBar.visibility = View.GONE
+                        uploadStatusTextView.visibility = View.GONE
+                        finish()
+                    }
+                    .addOnFailureListener { e ->
+                        Toast.makeText(this, "저장 중 오류가 발생했습니다.", Toast.LENGTH_SHORT).show()
+                        uploadProgressBar.visibility = View.GONE
+                        uploadStatusTextView.visibility = View.GONE
+                    }
             }
-            .addOnFailureListener { e ->
-                val errorMessage = "글 작성 중 오류가 발생했습니다: $e"
-                Toast.makeText(this@FindReportpage, errorMessage, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun isFormValid(): Boolean {
+        val editTextTitle: EditText = findViewById(R.id.editTextTitle)
+        val editTextItemType: EditText = findViewById(R.id.editTextItemType)
+        val editTextGetDate: EditText = findViewById(R.id.editTextGetDate)
+        val editTextLocation: EditText = findViewById(R.id.editTextLocation)
+        val editTextRemarks: EditText = findViewById(R.id.editTextRemarks)
+
+        return editTextTitle.text.isNotEmpty() &&
+                editTextItemType.text.isNotEmpty() &&
+                editTextGetDate.text.isNotEmpty() &&
+                editTextLocation.text.isNotEmpty() &&
+                editTextRemarks.text.isNotEmpty()
+    }
+
+    private fun uploadImagesToStorage(userId: String, onSuccess: (List<String>) -> Unit) {
+        val imageUrls = mutableListOf<String>()
+        val storageRef = storage.reference.child("found_images").child(userId)
+
+        for (uri in imageUriList) {
+            val fileRef = storageRef.child(System.currentTimeMillis().toString() + ".jpg")
+            fileRef.putFile(uri).addOnSuccessListener {
+                fileRef.downloadUrl.addOnSuccessListener { downloadUri ->
+                    imageUrls.add(downloadUri.toString())
+                    if (imageUrls.size == imageUriList.size) {
+                        onSuccess(imageUrls)
+                    }
+                }
+            }.addOnFailureListener {
+                // 업로드 실패 처리
+                uploadProgressBar.visibility = View.GONE
+                uploadStatusTextView.visibility = View.GONE
             }
+        }
+    }
+
+    companion object {
+        private const val REQUEST_IMAGE_PICK = 1
     }
 }
