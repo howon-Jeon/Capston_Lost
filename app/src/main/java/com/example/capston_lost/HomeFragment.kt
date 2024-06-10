@@ -12,8 +12,10 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.bumptech.glide.Glide
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.Query
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import java.text.SimpleDateFormat
 import java.util.*
@@ -37,26 +39,29 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Retrieve user name from SharedPreferences
-        val sharedPref = requireActivity().getSharedPreferences("userDetails", Context.MODE_PRIVATE)
-        val userName = sharedPref.getString("userName", "User")
-
-        // Set user name to TextView
-        val userNameTextView: TextView = view.findViewById(R.id.home_user_name)
-        userNameTextView.text = userName
-
+        val currentUser = Firebase.auth.currentUser
         profileImageView = view.findViewById(R.id.home_profile)
         recentlyTextView = view.findViewById(R.id.home_recently_text)
         firestore = FirebaseFirestore.getInstance()
         swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout)
 
-        // Load profile image URL from SharedPreferences
-        val profileImageUrl = sharedPref.getString("profileImageUrl", null)
-        if (profileImageUrl != null) {
-            // Load the profile image using Glide
-            Glide.with(this).load(profileImageUrl).into(profileImageView)
-        } else {
-            // Optionally, handle the case where there is no profile image URL
+        val userNameTextView: TextView = view.findViewById(R.id.home_user_name)
+
+        if (currentUser != null) {
+            val userDocRef = firestore.collection("users").document(currentUser.uid)
+            userDocRef.get().addOnSuccessListener { document ->
+                if (document != null && document.exists()) {
+                    val userName = document.getString("name")
+                    val profileImageUrl = document.getString("profileImageUrl")
+
+                    userNameTextView.text = userName ?: "User"
+                    profileImageUrl?.let {
+                        Glide.with(this).load(it).into(profileImageView)
+                    }
+                }
+            }.addOnFailureListener {
+                userNameTextView.text = "User"
+            }
         }
 
         val lostButton: Button = view.findViewById(R.id.home_lost_button)

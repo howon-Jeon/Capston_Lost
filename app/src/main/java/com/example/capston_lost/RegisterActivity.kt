@@ -13,10 +13,12 @@ import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 
 class RegisterActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
+    private lateinit var db: FirebaseFirestore
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,12 +30,15 @@ class RegisterActivity : AppCompatActivity() {
         // Firebase 인증 인스턴스 생성
         auth = Firebase.auth
 
+        // Firestore 인스턴스 생성
+        db = FirebaseFirestore.getInstance()
+
         val enrollbtn = findViewById<Button>(R.id.loginButton)
         enrollbtn.setOnClickListener {
-            val emailId = findViewById(R.id.member_edit_id) as EditText
-            val passwordId = findViewById(R.id.member_edit_pw) as EditText
-            val checkPasswordId = findViewById(R.id.member_edit_pw_re) as EditText
-            val usersname = findViewById(R.id.member_edit_name) as EditText
+            val emailId = findViewById<EditText>(R.id.member_edit_id)
+            val passwordId = findViewById<EditText>(R.id.member_edit_pw)
+            val checkPasswordId = findViewById<EditText>(R.id.member_edit_pw_re)
+            val usersname = findViewById<EditText>(R.id.member_edit_name)
 
             val email: String = emailId.text.toString()
             val password: String = passwordId.text.toString()
@@ -59,14 +64,25 @@ class RegisterActivity : AppCompatActivity() {
                             Log.d(TAG, "createUserWithEmail:success")
                             val users = auth.currentUser
 
-                            // Store user name in SharedPreferences
-                            val sharedPref = getSharedPreferences("userDetails", Context.MODE_PRIVATE)
-                            with (sharedPref.edit()) {
-                                putString("userName", names)
-                                apply()
-                            }
+                            // Save user data to Firestore
+                            val user = hashMapOf(
+                                "email" to email,
+                                "name" to names
+                            )
+                            db.collection("users").document(users!!.uid).set(user)
+                                .addOnSuccessListener {
+                                    Log.d(TAG, "DocumentSnapshot successfully written!")
+                                    updateUI(users)
+                                }
+                                .addOnFailureListener { e ->
+                                    Log.w(TAG, "Error writing document", e)
+                                    Toast.makeText(
+                                        baseContext,
+                                        "Failed to save user data.",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
 
-                            updateUI(users)
                         } else {
                             // 회원가입 실패
                             Log.w(TAG, "createUserWithEmail:failure", task.exception)
@@ -101,4 +117,3 @@ class RegisterActivity : AppCompatActivity() {
         // Implement your reload logic here if needed
     }
 }
-

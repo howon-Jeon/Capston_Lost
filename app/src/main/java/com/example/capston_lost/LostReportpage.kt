@@ -119,8 +119,6 @@ class LostReportpage : AppCompatActivity() {
         val editTextLocation: EditText = findViewById(R.id.editTextLocation)
         val editTextRemarks: EditText = findViewById(R.id.editTextRemarks)
 
-        val sharedPref = getSharedPreferences("userDetails", Context.MODE_PRIVATE)
-        val userName = sharedPref.getString("userName", "Unknown")
         val userId = FirebaseAuth.getInstance().currentUser?.uid
         val title = editTextTitle.text.toString()
         val itemType = editTextItemType.text.toString()
@@ -129,36 +127,46 @@ class LostReportpage : AppCompatActivity() {
         val remarks = editTextRemarks.text.toString()
 
         if (userId != null) {
-            // 이미지 업로드 후 Firestore에 저장
-            uploadImagesToStorage(userId) { imageUrls ->
-                val report = LostItem(
-                    title = title,
-                    itemType = itemType,
-                    getDate = getDate,
-                    location = location,
-                    remarks = remarks,
-                    userId = userId,
-                    imageUrl = imageUrls.joinToString(","),
-                    nickname = userName ?: "Unknown"
-                )
+            // Fetch user name from Firestore
+            firestore.collection("users").document(userId).get()
+                .addOnSuccessListener { document ->
+                    if (document != null && document.exists()) {
+                        val userName = document.getString("name") ?: "Unknown"
+                        uploadImagesToStorage(userId) { imageUrls ->
+                            val report = LostItem(
+                                title = title,
+                                itemType = itemType,
+                                getDate = getDate,
+                                location = location,
+                                remarks = remarks,
+                                userId = userId,
+                                imageUrl = imageUrls.joinToString(","),
+                                nickname = userName
+                            )
 
-                firestore.collection("lost_reports")
-                    .add(report)
-                    .addOnSuccessListener {
-                        Toast.makeText(this, "분실 신고가 저장되었습니다.", Toast.LENGTH_SHORT).show()
-                        uploadProgressBar.visibility = View.GONE
-                        uploadStatusTextView.visibility = View.GONE
-                        finish()
+                            firestore.collection("lost_reports")
+                                .add(report)
+                                .addOnSuccessListener {
+                                    Toast.makeText(this, "분실 신고가 저장되었습니다.", Toast.LENGTH_SHORT).show()
+                                    uploadProgressBar.visibility = View.GONE
+                                    uploadStatusTextView.visibility = View.GONE
+                                    finish()
+                                }
+                                .addOnFailureListener { e ->
+                                    Toast.makeText(this, "저장 중 오류가 발생했습니다.", Toast.LENGTH_SHORT).show()
+                                    uploadProgressBar.visibility = View.GONE
+                                    uploadStatusTextView.visibility = View.GONE
+                                }
+                        }
                     }
-                    .addOnFailureListener { e ->
-                        Toast.makeText(this, "저장 중 오류가 발생했습니다.", Toast.LENGTH_SHORT).show()
-                        uploadProgressBar.visibility = View.GONE
-                        uploadStatusTextView.visibility = View.GONE
-                    }
-            }
+                }
+                .addOnFailureListener {
+                    Toast.makeText(this, "사용자 정보를 가져오는 중 오류가 발생했습니다.", Toast.LENGTH_SHORT).show()
+                    uploadProgressBar.visibility = View.GONE
+                    uploadStatusTextView.visibility = View.GONE
+                }
         }
     }
-
 
     private fun isFormValid(): Boolean {
         val editTextTitle: EditText = findViewById(R.id.editTextTitle)
@@ -173,6 +181,7 @@ class LostReportpage : AppCompatActivity() {
                 editTextLocation.text.isNotEmpty() &&
                 editTextRemarks.text.isNotEmpty()
     }
+
     private fun uploadImagesToStorage(userId: String, onSuccess: (List<String>) -> Unit) {
         val imageUrls = mutableListOf<String>()
         val storageRef = storage.reference.child("lost_images").child(userId)

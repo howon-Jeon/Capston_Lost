@@ -17,6 +17,7 @@ import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
@@ -27,6 +28,7 @@ class MyPageFragment : Fragment() {
     private lateinit var uploadProgressBar: ProgressBar
     private lateinit var uploadStatusTextView: TextView
     private lateinit var storageRef: StorageReference
+    private lateinit var db: FirebaseFirestore
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,6 +44,7 @@ class MyPageFragment : Fragment() {
         uploadProgressBar = view.findViewById(R.id.uploadProgressBar)
         uploadStatusTextView = view.findViewById(R.id.uploadStatusTextView)
         storageRef = FirebaseStorage.getInstance().reference
+        db = FirebaseFirestore.getInstance()
 
         val logoutButton: Button = view.findViewById(R.id.logout)
         val chatButton: Button = view.findViewById(R.id.chat)
@@ -54,13 +57,23 @@ class MyPageFragment : Fragment() {
         if (currentUser != null) {
             userEmailTextView.text = currentUser.email
 
-            // Retrieve user name from SharedPreferences
-            val sharedPref = requireActivity().getSharedPreferences("userDetails", Context.MODE_PRIVATE)
-            val userName = sharedPref.getString("userName", "유저 이름")
-            userNameTextView.text = userName
-
-            // Load the current profile image from Firebase Storage
-            loadProfileImage(currentUser.uid)
+            // Retrieve user name and profile image URL from Firestore
+            db.collection("users").document(currentUser.uid).get()
+                .addOnSuccessListener { document ->
+                    if (document != null && document.exists()) {
+                        val userName = document.getString("name")
+                        val profileImageUrl = document.getString("profileImageUrl")
+                        userNameTextView.text = userName ?: "유저 이름"
+                        profileImageUrl?.let {
+                            Glide.with(this).load(it).into(profileImageView)
+                        }
+                    } else {
+                        userNameTextView.text = "유저 이름"
+                    }
+                }
+                .addOnFailureListener {
+                    userNameTextView.text = "유저 이름"
+                }
         }
 
         selectProfileImageButton.setOnClickListener {
@@ -111,8 +124,8 @@ class MyPageFragment : Fragment() {
             profileImageRef.putFile(imageUri).addOnSuccessListener {
                 profileImageRef.downloadUrl.addOnSuccessListener { uri ->
                     Glide.with(this).load(uri).into(profileImageView)
-                    // Save profile image URL to SharedPreferences
-                    saveProfileImageUrl(uri.toString())
+                    // Save profile image URL to Firestore
+                    saveProfileImageUrlToFirestore(uri.toString())
                     // Hide progress bar and status text
                     uploadProgressBar.visibility = View.GONE
                     uploadStatusTextView.visibility = View.GONE
@@ -126,11 +139,17 @@ class MyPageFragment : Fragment() {
         }
     }
 
-    private fun saveProfileImageUrl(url: String) {
-        val sharedPref = requireActivity().getSharedPreferences("userDetails", Context.MODE_PRIVATE)
-        with(sharedPref.edit()) {
-            putString("profileImageUrl", url)
-            apply()
+    private fun saveProfileImageUrlToFirestore(url: String) {
+        val currentUser = Firebase.auth.currentUser
+        if (currentUser != null) {
+            val userDocRef = db.collection("users").document(currentUser.uid)
+            userDocRef.update("profileImageUrl", url)
+                .addOnSuccessListener {
+                    // Successfully updated profile image URL in Firestore
+                }
+                .addOnFailureListener {
+                    // Handle the error
+                }
         }
     }
 }

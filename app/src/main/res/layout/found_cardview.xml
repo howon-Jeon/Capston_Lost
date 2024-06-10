@@ -86,7 +86,7 @@
                         android:id="@+id/card_loc_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="습득 장소 : "
+                        android:text="보관 장소 : "
                         android:textColor="@color/black"
                         android:textSize="14sp"/>
                     <TextView
