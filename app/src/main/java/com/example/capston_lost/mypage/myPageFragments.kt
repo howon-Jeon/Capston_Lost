@@ -1,10 +1,14 @@
 package com.example.capston_lost.mypage
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.example.capston_lost.HomeFragment
 import com.example.capston_lost.Key
+import com.example.capston_lost.MainActivity2
+import com.example.capston_lost.MyPageFragment
 import com.example.capston_lost.R
 import com.example.capston_lost.databinding.FragmentMypageBinding
 import com.example.capston_lost.userlist.UserItem
@@ -46,10 +50,10 @@ class myPageFragments : Fragment(R.layout.fragment_mypage) {
         }
 
 
-//        binding.signOutButton.setOnClickListener {
-//            Firebase.auth.signOut()
-//            startActivity(Intent(context, LoginActivity::class.java))
-//            activity?.finish()
-//        }
+        binding.backButton.setOnClickListener {
+           Firebase.auth.signOut()
+           startActivity(Intent(context, MainActivity2::class.java))
+            activity?.finish()
+        }
     }
 }

@@ -26,7 +26,7 @@
                 android:id="@+id/found_toolbar_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="분실물"
+                android:text="습득물"
                 android:textColor="@android:color/white"
                 android:textSize="24sp"
                 android:textStyle="bold"
