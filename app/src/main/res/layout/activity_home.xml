@@ -146,7 +146,7 @@
                         android:layout_marginTop="20dp"
                         android:gravity="left"
                         android:lineSpacingExtra="10dp"
-                        android:text="접수된\n습득물"
+                        android:text="최근 습득된\n습득물"
                         android:textColor="@color/white"
                         android:textSize="32sp"
                         app:layout_constraintStart_toStartOf="parent"

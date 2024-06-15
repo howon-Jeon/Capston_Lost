@@ -16,6 +16,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import java.text.SimpleDateFormat
 import java.util.*
 
 class LostReportpage : AppCompatActivity() {
@@ -104,7 +105,11 @@ class LostReportpage : AppCompatActivity() {
         val day = calendar.get(Calendar.DAY_OF_MONTH)
 
         val datePickerDialog = DatePickerDialog(this, { _, selectedYear, selectedMonth, selectedDay ->
-            val dateString = "$selectedYear-${selectedMonth + 1}-$selectedDay"
+            val calendar = Calendar.getInstance().apply {
+                set(selectedYear, selectedMonth, selectedDay)
+            }
+            val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+            val dateString = dateFormat.format(calendar.time)
             val editTextGetDate: EditText = findViewById(R.id.editTextGetDate)
             editTextGetDate.setText(dateString)
         }, year, month, day)
