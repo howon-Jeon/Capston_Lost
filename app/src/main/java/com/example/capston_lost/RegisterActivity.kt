@@ -54,7 +54,12 @@ class RegisterActivity : AppCompatActivity() { // RegisterActivity 클래스 정
                 auth.createUserWithEmailAndPassword(email, password) // 이메일과 패스워드로 사용자 생성
                     .addOnCompleteListener(this) { task -> // 사용자 생성 작업 완료 리스너
                         if (task.isSuccessful) { // 사용자 생성 성공 시
-                            Log.d(TAG, "createUserWithEmail:success") // 성공 로그 출력
+                            Log.d(TAG, "회원가입 성공") // 성공 로그 출력
+                            Toast.makeText(
+                                baseContext,
+                                "회원가입 성공",
+                                Toast.LENGTH_SHORT,
+                            ).show() // 토스트 메시지 표시
                             val users = auth.currentUser // 현재 사용자 가져오기
 
                             val user = hashMapOf( // 사용자 정보 맵 생성
@@ -64,6 +69,11 @@ class RegisterActivity : AppCompatActivity() { // RegisterActivity 클래스 정
                             db.collection("users").document(users!!.uid).set(user) // Firestore에 사용자 정보 저장
                                 .addOnSuccessListener {
                                     Log.d(TAG, "DocumentSnapshot successfully written!") // 성공 로그 출력
+                                    Toast.makeText(
+                                        baseContext,
+                                        "회원가입 성공",
+                                        Toast.LENGTH_SHORT,
+                                    ).show() // 토스트 메시지 표시
                                     updateUI(users) // UI 업데이트
                                 }
                                 .addOnFailureListener { e ->
@@ -79,7 +89,7 @@ class RegisterActivity : AppCompatActivity() { // RegisterActivity 클래스 정
                             Log.w(TAG, "createUserWithEmail:failure", task.exception) // 실패 로그 출력
                             Toast.makeText(
                                 baseContext,
-                                "Authentication failed.",
+                                "회원가입 실패",
                                 Toast.LENGTH_SHORT,
                             ).show() // 토스트 메시지 표시
                             updateUI(null) // UI 업데이트
@@ -90,7 +100,7 @@ class RegisterActivity : AppCompatActivity() { // RegisterActivity 클래스 정
     }
 
     private fun updateUI(user: FirebaseUser?) { // UI 업데이트 메소드
-        val intent = Intent(this, MainActivity2::class.java) // MainActivity2로 이동할 인텐트 생성
+        val intent = Intent(this, MainActivity::class.java) // MainActivity로 이동할 인텐트 생성
         startActivity(intent) // 액티비티 시작
         finish() // 현재 액티비티 종료
     }
