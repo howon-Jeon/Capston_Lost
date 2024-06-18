@@ -16,7 +16,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 
-class ChatActivity : AppCompatActivity() { // ChatActivity 클래스 선언
+class ChatActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityChatdetailBinding // 바인딩 변수 선언
 

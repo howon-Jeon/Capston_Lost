@@ -148,7 +148,7 @@
                         android:lineSpacingExtra="10dp"
                         android:text="최근 습득된\n습득물"
                         android:textColor="@color/white"
-                        android:textSize="32sp"
+                        android:textSize="30sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -173,36 +173,11 @@
                     app:layout_constraintTop_toBottomOf="@+id/home_recently_button">
 
                     <Button
-                        android:id="@+id/home_lost_button"
-                        android:layout_width="110dp"
-                        android:layout_height="110dp"
-                        android:layout_marginTop="10dp"
-
-                        android:background="@drawable/home_min_button_background"
-                        android:gravity="left"
-                        android:lineSpacingExtra="10dp"
-                        android:padding="15dp"
-                        android:text="분실물\n신고"
-                        android:textColor="@color/black"
-                        android:textSize="18sp"
-                        app:layout_constraintEnd_toStartOf="@+id/home_found_button"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:layout_margin="10dp"
-                        android:layout_marginEnd="5dp"
-                        android:src="@drawable/home_lost_button_icon"
-                        app:layout_constraintBottom_toBottomOf="@id/home_lost_button"
-                        app:layout_constraintEnd_toEndOf="@+id/home_lost_button" />
-
-                    <Button
                         android:id="@+id/home_found_button"
                         android:layout_width="110dp"
                         android:layout_height="110dp"
                         android:layout_marginTop="10dp"
+
                         android:background="@drawable/home_min_button_background"
                         android:gravity="left"
                         android:lineSpacingExtra="10dp"
@@ -210,8 +185,8 @@
                         android:text="습득물\n신고"
                         android:textColor="@color/black"
                         android:textSize="18sp"
-                        app:layout_constraintEnd_toStartOf="@+id/chat"
-                        app:layout_constraintStart_toEndOf="@+id/home_lost_button"
+                        app:layout_constraintEnd_toStartOf="@+id/home_lost_button"
+                        app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <ImageView
@@ -222,6 +197,31 @@
                         android:src="@drawable/home_lost_button_icon"
                         app:layout_constraintBottom_toBottomOf="@id/home_found_button"
                         app:layout_constraintEnd_toEndOf="@+id/home_found_button" />
+
+                    <Button
+                        android:id="@+id/home_lost_button"
+                        android:layout_width="110dp"
+                        android:layout_height="110dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/home_min_button_background"
+                        android:gravity="left"
+                        android:lineSpacingExtra="10dp"
+                        android:padding="15dp"
+                        android:text="분실물\n신고"
+                        android:textColor="@color/black"
+                        android:textSize="18sp"
+                        app:layout_constraintEnd_toStartOf="@+id/chat"
+                        app:layout_constraintStart_toEndOf="@+id/home_found_button"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_margin="10dp"
+                        android:layout_marginEnd="5dp"
+                        android:src="@drawable/home_lost_button_icon"
+                        app:layout_constraintBottom_toBottomOf="@id/home_lost_button"
+                        app:layout_constraintEnd_toEndOf="@+id/home_lost_button" />
 
                     <Button
                         android:id="@+id/chat"
@@ -235,7 +235,7 @@
                         android:textColor="@color/black"
                         android:textSize="18sp"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/home_found_button"
+                        app:layout_constraintStart_toEndOf="@+id/home_lost_button"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <ImageView

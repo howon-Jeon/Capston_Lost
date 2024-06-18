@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.capston_lost.databinding.ItemChatBinding
 import com.example.capston_lost.userlist.UserItem
 
-class ChatAdapter : ListAdapter<ChatItem, ChatAdapter.ViewHolder>(differ) { // ChatAdapter 클래스 선언
+class ChatAdapter : ListAdapter<ChatItem, ChatAdapter.ViewHolder>(differ) {
 
     var otherUserItem: UserItem? = null // 상대 유저 아이템 변수 선언
 
