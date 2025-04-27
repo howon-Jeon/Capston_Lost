@@ -45,19 +45,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/chosunTitle" />
 
-    <Button
-        android:id="@+id/btn_googleSignIn"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:textColor="@color/black"
-        android:background="@color/white"
-        android:text="구글 로그인"
-        android:layout_marginTop="20dp"
-        android:fontFamily="@font/gmarketsansttfbold"
 
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/loginButton" />
 
     <Button
         android:id="@+id/memberButton"
@@ -70,7 +58,7 @@
         android:layout_marginTop="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_googleSignIn" />
+        app:layout_constraintTop_toBottomOf="@+id/loginButton" />
 
 
 

@@ -6,5 +6,8 @@ data class LostItem(
     val getDate: String = "",
     val location: String = "",
     val remarks: String = "",
-    val userId: String = ""
+    val userId: String = "",
+    val imageUrl: String = "", // 이미지 URL 필드 추가
+    var documentId: String = "", // 새로 추가된 필드
+    val nickname: String = "" // 사용자의 이름 필드 추가
 )

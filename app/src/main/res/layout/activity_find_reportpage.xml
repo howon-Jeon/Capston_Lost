@@ -93,26 +93,15 @@
         android:fontFamily="@font/gmarket"
         android:textSize="16sp"
         android:backgroundTint="#D9D9D9"
-        android:hint="습득 장소" />
-
-    <EditText
-        android:id="@+id/editTextKeep"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/editTextLocation"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginTop="20dp"
-        android:fontFamily="@font/gmarket"
-        android:textSize="16sp"
-        android:backgroundTint="#D9D9D9"
         android:hint="보관 장소" />
+
+
 
     <EditText
         android:id="@+id/editTextRemarks"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/editTextKeep"
+        android:layout_below="@id/editTextLocation"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginTop="20dp"
@@ -149,6 +138,45 @@
         android:layout_marginTop="20dp"
         android:layout_toEndOf="@id/imageView1"
         android:layout_marginStart="16dp"
+        android:visibility="gone" />
+
+    <ImageButton
+        android:id="@+id/selectImageButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="16dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        app:srcCompat="@drawable/camera" />
+
+    <ImageView
+        android:id="@+id/selectedImageView"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_toEndOf="@id/selectImageButton"
+        android:background="#D9D9D9"
+        />
+
+    <ProgressBar
+        android:id="@+id/uploadProgressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone" />
+
+    <!-- 업로드 상태 표시 TextView 추가 -->
+    <TextView
+        android:id="@+id/uploadStatusTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/uploadProgressBar"
+        android:layout_centerHorizontal="true"
+        android:text="업로드 중..."
         android:visibility="gone" />
 
 </RelativeLayout>

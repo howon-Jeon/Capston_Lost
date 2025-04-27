@@ -1,20 +1,21 @@
 package com.example.capston_lost
 
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 
-class ViewPagerAdapter(fragmentActivity: FragmentActivity) : FragmentStateAdapter(fragmentActivity) {
-    private val fragments = listOf(
-        HomeFragment(),
-        FoundPageFragment(),
-        LostPageFragment(),
-        MyPageFragment()
-    )
-
-    override fun getItemCount(): Int = fragments.size
+class ViewPagerAdapter(activity: AppCompatActivity) : FragmentStateAdapter(activity) {
+    override fun getItemCount(): Int {
+        return 4 // Number of tabs
+    }
 
     override fun createFragment(position: Int): Fragment {
-        return fragments[position]
+        return when (position) {
+            0 -> HomeFragment() // Replace with actual fragment class
+            1 -> TabFoundFragment() // Replace with actual fragment class
+            2 -> TabLostFragment() // This is the fragment you provided
+            3 -> MyPageFragment() // Replace with actual fragment class
+            else -> throw IllegalStateException("Unexpected position $position")
+        }
     }
 }

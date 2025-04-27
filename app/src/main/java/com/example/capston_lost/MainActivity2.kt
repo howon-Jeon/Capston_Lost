@@ -23,90 +23,85 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.view.ViewGroup
 
+class MainActivity2 : AppCompatActivity() { // MainActivity2 클래스 정의, AppCompatActivity 상속
 
-class MainActivity2 : AppCompatActivity() {
+    private lateinit var binding: ActivityMain2Binding // ActivityMain2Binding 타입의 지연 초기화 변수 선언
 
-    private lateinit var binding: ActivityMain2Binding
-    override fun onCreate(savedInstanceState: Bundle?) {
-        binding = ActivityMain2Binding.inflate(layoutInflater)
-        super.onCreate(savedInstanceState)
-        setContentView(binding.root)
-        val currentUser = Firebase.auth.currentUser
+    override fun onCreate(savedInstanceState: Bundle?) { // onCreate 메소드 오버라이드
+        binding = ActivityMain2Binding.inflate(layoutInflater) // binding 변수 초기화
+        super.onCreate(savedInstanceState) // 상위 클래스의 onCreate 호출
+        setContentView(binding.root) // 레이아웃 설정
+        val currentUser = Firebase.auth.currentUser // 현재 로그인한 사용자 가져오기
 
-        if(currentUser == null) {
-            // 로그인이 안되어있음
-            startActivity(Intent(this, MainActivity::class.java))
-            finish()
-           // return // 반드시 return하여 이후 코드를 실행하지 않도록 합니다.
+        if (currentUser == null) { // 사용자가 로그인되어 있지 않으면
+            startActivity(Intent(this, MainActivity::class.java)) // MainActivity로 이동
+            finish() // 현재 액티비티 종료
+            return // 이후 코드 실행 방지
         }
-        // Get the user name from the intent
-        val userName = intent.getStringExtra("USER_NAME")
 
-        // 탭 연결
-        val viewPager: ViewPager2 = binding.viewpager
-        val tabLayout: TabLayout = binding.tabs
+        val userName = intent.getStringExtra("USER_NAME") // 인텐트에서 사용자 이름 가져오기
 
-        val adapter = ViewPagerAdapter(this)
-        viewPager.adapter = adapter
+        val viewPager: ViewPager2 = binding.viewpager // ViewPager2 객체 초기화
+        val tabLayout: TabLayout = binding.tabs // TabLayout 객체 초기화
 
-        val typeface: Typeface? = ResourcesCompat.getFont(this, R.font.gmarketsansttfmedium)
+        val adapter = ViewPagerAdapter(this) // ViewPagerAdapter 객체 생성
+        viewPager.adapter = adapter // ViewPager의 어댑터 설정
 
-        TabLayoutMediator(tabLayout, viewPager) { tab, position ->
-            when (position) {
+        val typeface: Typeface? = ResourcesCompat.getFont(this, R.font.gmarketsansttfmedium) // 커스텀 폰트 로드
+
+        TabLayoutMediator(tabLayout, viewPager) { tab, position -> // TabLayoutMediator 설정
+            when (position) { // 포지션에 따라 탭 설정
                 0 -> {
-                    tab.text = "홈"
-                    tab.setIcon(R.drawable.tab_home)
+                    tab.text = "홈" // 첫 번째 탭 텍스트 설정
+                    tab.setIcon(R.drawable.tab_home) // 첫 번째 탭 아이콘 설정
                 }
                 1 -> {
-                    tab.text = "습득물"
-                    tab.setIcon(R.drawable.tab_found)
+                    tab.text = "습득물" // 두 번째 탭 텍스트 설정
+                    tab.setIcon(R.drawable.tab_found) // 두 번째 탭 아이콘 설정
                 }
                 2 -> {
-                    tab.text = "분실물"
-                    tab.setIcon(R.drawable.tab_lost)
+                    tab.text = "분실물" // 세 번째 탭 텍스트 설정
+                    tab.setIcon(R.drawable.tab_lost) // 세 번째 탭 아이콘 설정
                 }
                 3 -> {
-                    tab.text = "마이페이지"
-                    tab.setIcon(R.drawable.tab_mypage)
+                    tab.text = "마이페이지" // 네 번째 탭 텍스트 설정
+                    tab.setIcon(R.drawable.tab_mypage) // 네 번째 탭 아이콘 설정
                 }
             }
-        }.attach()
+        }.attach() // TabLayoutMediator 적용
 
-        // Apply the typeface to all tab items after setup
-        for (i in 0 until tabLayout.tabCount) {
-            val tab = tabLayout.getTabAt(i)
+        for (i in 0 until tabLayout.tabCount) { // 모든 탭에 대해 폰트 적용
+            val tab = tabLayout.getTabAt(i) // 각 탭 가져오기
             if (tab != null) {
-                applyFontToTab(tab, typeface)
+                applyFontToTab(tab, typeface) // 폰트 적용
             }
         }
 
-        // Add a listener to apply the typeface when a tab is selected
-        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-            override fun onTabSelected(tab: TabLayout.Tab?) {
+        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener { // 탭 선택 리스너 추가
+            override fun onTabSelected(tab: TabLayout.Tab?) { // 탭 선택 시
                 if (tab != null) {
-                    applyFontToTab(tab, typeface)
+                    applyFontToTab(tab, typeface) // 폰트 적용
                 }
             }
 
-            override fun onTabUnselected(tab: TabLayout.Tab?) {}
+            override fun onTabUnselected(tab: TabLayout.Tab?) {} // 탭 선택 해제 시 (구현 필요 없음)
 
-            override fun onTabReselected(tab: TabLayout.Tab?) {
+            override fun onTabReselected(tab: TabLayout.Tab?) { // 탭 다시 선택 시
                 if (tab != null) {
-                    applyFontToTab(tab, typeface)
+                    applyFontToTab(tab, typeface) // 폰트 적용
                 }
             }
         })
     }
 
-    private fun applyFontToTab(tab: TabLayout.Tab, typeface: Typeface?) {
-        val tabViewGroup = (tab.view as ViewGroup)
-        val tabViewChildCount = tabViewGroup.childCount
-        for (i in 0 until tabViewChildCount) {
-            val tabViewChild = tabViewGroup.getChildAt(i)
-            if (tabViewChild is TextView) {
-                tabViewChild.typeface = typeface
+    private fun applyFontToTab(tab: TabLayout.Tab, typeface: Typeface?) { // 탭에 폰트 적용 메소드
+        val tabViewGroup = (tab.view as ViewGroup) // 탭의 뷰 그룹 가져오기
+        val tabViewChildCount = tabViewGroup.childCount // 뷰 그룹의 자식 수
+        for (i in 0 until tabViewChildCount) { // 모든 자식 뷰에 대해
+            val tabViewChild = tabViewGroup.getChildAt(i) // 각 자식 뷰 가져오기
+            if (tabViewChild is TextView) { // 자식 뷰가 TextView일 경우
+                tabViewChild.typeface = typeface // 폰트 적용
             }
         }
     }
 }
-
